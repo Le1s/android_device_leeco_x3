@@ -292,9 +292,9 @@ PRODUCT_PACKAGES += \
 # Sensor Calibration
 PRODUCT_PACKAGES += libem_sensor_jni
 
-# Include IMSEnabler
+#EngineerMode
 PRODUCT_PACKAGES += \
-    IMSEnabler
+    EngineerMode 
  
 #App YGPS
 PRODUCT_PACKAGES += \
