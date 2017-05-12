@@ -39,6 +39,14 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     Snap
 
+#EngineerMode
+PRODUCT_PACKAGES += \
+    EngineerMode  
+
+#Ims
+PRODUCT_PACKAGES += \
+    Ims
+
 # Charger
 PRODUCT_PACKAGES += \
     charger \
@@ -291,10 +299,6 @@ PRODUCT_PACKAGES += \
 
 # Sensor Calibration
 PRODUCT_PACKAGES += libem_sensor_jni
-
-#EngineerMode
-PRODUCT_PACKAGES += \
-    EngineerMode 
  
 #App YGPS
 PRODUCT_PACKAGES += \
