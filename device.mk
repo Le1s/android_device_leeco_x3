@@ -41,11 +41,7 @@ PRODUCT_PACKAGES += \
 
 #EngineerMode
 PRODUCT_PACKAGES += \
-    EngineerMode  
-
-#Ims
-PRODUCT_PACKAGES += \
-    Ims
+    EngineerMode
 
 # Charger
 PRODUCT_PACKAGES += \
