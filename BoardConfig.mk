@@ -1,6 +1,6 @@
--include vendor/LeTV/x500/BoardConfigVendor.mk
+-include vendor/leeco/x3/BoardConfigVendor.mk
 
-LOCAL_PATH := device/LeTV/x500
+LOCAL_PATH := device/leeco/x3
 
 TARGET_SPECIFIC_HEADER_PATH := $(LOCAL_PATH)/include
 
@@ -89,7 +89,7 @@ BOARD_MKBOOTIMG_ARGS := \
 #prebuilt
 TARGET_PREBUILT_KERNEL := $(LOCAL_PATH)/prebuilt/kernel
 #source
-TARGET_KERNEL_SOURCE := kernel/LeTV/x500
+TARGET_KERNEL_SOURCE := kernel/leeco/x3
 TARGET_KERNEL_CONFIG := x500_defconfig
 TARGET_KERNEL_CROSS_COMPILE_PREFIX := aarch64-linux-android-
 BOARD_KERNEL_IMAGE_NAME := Image.gz-dtb
@@ -132,7 +132,7 @@ USE_XML_AUDIO_POLICY_CONF := 1
 
 # RIL
 #BOARD_PROVIDES_RILD := true
-BOARD_RIL_CLASS := ../../../device/LeTV/x500/ril
+BOARD_RIL_CLASS := ../../../device/leeco/x3/ril
 BOARD_CONNECTIVITY_MODULE := conn_soc
 
 # Display
@@ -141,8 +141,8 @@ TARGET_FORCE_HWC_FOR_VIRTUAL_DISPLAYS := true
 TARGET_RUNNING_WITHOUT_SYNC_FRAMEWORK := true
 
 # CMHW
-BOARD_USES_CYANOGEN_HARDWARE := true
-BOARD_HARDWARE_CLASS := $(LOCAL_PATH)/cmhw
+# BOARD_USES_CYANOGEN_HARDWARE := true
+# BOARD_HARDWARE_CLASS := $(LOCAL_PATH)/cmhw
 #TARGET_TAP_TO_WAKE_NODE := "/sys/bus/i2c/devices/i2c-2/2-004b/wake_gesture_enable"
 
 # Wifi
@@ -185,14 +185,14 @@ TARGET_SYSTEM_PROP := $(LOCAL_PATH)/system.prop
 
 # SELinux
 BOARD_SEPOLICY_DIRS := \
-    device/LeTV/x500/sepolicy
+    device/leeco/x3/sepolicy
 
 # Seccomp Filter
 BOARD_SECCOMP_POLICY := \
        $(LOCAL_PATH)/seccomp
 
 # Legacy blobs
-TARGET_NEEDS_TEXT_RELOCATIONS := true 
+TARGET_NEEDS_TEXT_RELOCATIONS := true
 
 BOARD_MEDIATEK_USES_GPS := true
 
@@ -203,8 +203,7 @@ BOARD_MEDIATEK_USES_GPS := true
 #TARGET_HAS_LEGACY_CAMERA_HAL1 := true
 
 #Hack for prebuilt kernel
-ifeq ($(TARGET_DEVICE),x500)
+ifeq ($(TARGET_DEVICE),x3)
 $(shell mkdir -p $(OUT)/obj/KERNEL_OBJ/usr)
 $(shell touch $(OUT)/obj/KERNEL_OBJ/usr/export_includes)
 endif
-
