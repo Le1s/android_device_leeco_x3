@@ -1,5 +1,4 @@
 #!/bin/bash
-cd ../../../..
 cd system/core
 git apply -v ../../device/leeco/x3/patches_decker/0001-Remove-CAP_SYS_NICE-from-surfaceflinger.patch
 git apply -v ../../device/leeco/x3/patches_decker/0004-libnetutils-add-MTK-bits-ifc_ccmni_md_cfg.patch

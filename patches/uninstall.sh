@@ -2,15 +2,13 @@ echo $1
 rootdirectory="$PWD"
 # ---------------------------------
 
-dirs="bionic system/sepolicy frameworks/av frameworks/base frameworks/native frameworks/opt/telephony frameworks/opt/net/ims hardware/libhardware packages/apps/Settings packages/services/Telecomm packages/services/Telephony system/netd system/core system/bt system/sepolicy"
+dirs="packages/apps/Settings system/core"
 
 for dir in $dirs ; do
 	cd $rootdirectory
 	cd $dir
 	echo "Reverting $dir patches..."
-	#git apply --reverse $rootdirectory/device/leeco/x3/patches/$dir/*.patch
-	git reset --hard
-	git clean -f -d
+	git apply --reverse $rootdirectory/device/leeco/x3/patches/$dir/*.patch
 	echo " "
 done
 

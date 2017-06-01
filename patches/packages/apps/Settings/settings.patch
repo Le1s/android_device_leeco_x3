@@ -19,7 +19,7 @@ index 3e93d41..a352391 100644
      <!-- Device Info screen. Used for a status item's value when the proper value is not known -->
      <string name="device_info_default">Unknown</string>
 +    <!-- Device Info screen. Used for a status item's value when the proper value is not known -->
-+    <string name="author_info_default">WisniaPL</string>
++    <string name="author_info_default">SscSPs</string>
      <!-- [CHAR LIMIT=NONE] Device Info screen. Countdown for user taps to enable development settings -->
      <plurals name="show_dev_countdown">
          <item quantity="one">You are now <xliff:g id="step_count">%1$d</xliff:g> step away from being a developer.</item>
@@ -39,13 +39,13 @@ index f756b26..0f87d0b 100644
 @@ -133,6 +133,14 @@
                          android:data="https://source.android.com/security/bulletin/" />
          </PreferenceScreen>
- 
+
 +        <!-- Author Info -->
 +        <PreferenceScreen android:key="author_info"
 +                android:title="@string/author_info"
 +                android:summary="@string/author_info_default">
 +                <intent android:action="android.intent.action.VIEW"
-+                        android:data="https://www.paypal.me/Wisniabdg" />
++                        android:data="https://www.github.com/SscSPs" />
 +        </PreferenceScreen>
 +
          <!-- Device FCC equipment id -->
@@ -66,7 +66,7 @@ index cba4865..c7f5fa3 100644
 @@ -141,6 +142,9 @@ public class DeviceInfoSettings extends SettingsPreferenceFragment implements In
          setExplicitValueSummary(KEY_MOD_API_LEVEL, constructApiLevelString());
          findPreference(KEY_MOD_API_LEVEL).setEnabled(true);
- 
+
 +	String author_info = getResources().getString(R.string.author_info_default);
 +	setStringSummary(KEY_AUTHOR_INFO, author_info);
 +
@@ -87,6 +87,5 @@ index cba4865..c7f5fa3 100644
          } else if (preference.getKey().equals(KEY_DEVICE_FEEDBACK)) {
              sendFeedback();
          } else if(preference.getKey().equals(KEY_SYSTEM_UPDATE_SETTINGS)) {
--- 
+--
 2.7.4
-
