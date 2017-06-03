@@ -29,28 +29,12 @@ Camera  | Primary: 13 MP, Secondary: 5 MP
 # Build Information
 
 ## Working
-* Adjustable brightness
-* Audio
-* Auto brightness
-* MTP and Mass Storage modes
-* Vibration
-* Rotation
-* RIL
-* Video
-* Gallery
-* Fingerprint
-* Mic
-* Wi-Fi
-* Bluetooth
-* Internet
-* GPS
-* IR
-* Audio over BT
+* ???
 
 ## Broken/Bugs
-* Camera
-* Flashlight (statusbar and camera)
-* ?????
+* ???
+
+The build doesn't boot yet. Work is in progress
 
 ## THANKS TO:
 
