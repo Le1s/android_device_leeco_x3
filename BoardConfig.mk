@@ -87,7 +87,7 @@ BOARD_MKBOOTIMG_ARGS := \
 	--tags_offset 0x0df88000 \
 	--board WisniaPL
 #prebuilt
-TARGET_PREBUILT_KERNEL := $(LOCAL_PATH)/prebuilt/kernel
+#TARGET_PREBUILT_KERNEL := $(LOCAL_PATH)/prebuilt/kernel
 #source
 TARGET_KERNEL_SOURCE := kernel/leeco/x3
 TARGET_KERNEL_CONFIG := x500_defconfig
@@ -203,7 +203,7 @@ BOARD_MEDIATEK_USES_GPS := true
 #TARGET_HAS_LEGACY_CAMERA_HAL1 := true
 
 #Hack for prebuilt kernel
-ifeq ($(TARGET_DEVICE),x3)
-$(shell mkdir -p $(OUT)/obj/KERNEL_OBJ/usr)
-$(shell touch $(OUT)/obj/KERNEL_OBJ/usr/export_includes)
-endif
+#ifeq ($(TARGET_DEVICE),x3)
+#$(shell mkdir -p $(OUT)/obj/KERNEL_OBJ/usr)
+#$(shell touch $(OUT)/obj/KERNEL_OBJ/usr/export_includes)
+#endif
