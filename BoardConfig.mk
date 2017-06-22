@@ -192,3 +192,9 @@ $(shell ln -sf libMcGatekeeper.so \$(TARGET_OUT)/lib64/hw/gatekeeper.mt6795.so; 
 	ln -sf libMcGatekeeper.so \$(TARGET_OUT)/lib/hw/gatekeeper.mt6795.so; \\
 	ln -sf libMcGatekeeper.so \$(TARGET_OUT)/lib/hw/gatekeeper.x500.so; )
 endif
+
+#Hack for prebuilt kernel
+ifeq ($(TARGET_DEVICE),x3)
+$(shell mkdir -p $(OUT)/obj/KERNEL_OBJ/usr)
+$(shell touch $(OUT)/obj/KERNEL_OBJ/usr/export_includes)
+endif 
