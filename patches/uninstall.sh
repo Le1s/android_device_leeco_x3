@@ -9,7 +9,7 @@ for dir in $dirs ; do
 	#cd $dir
 	echo "Reverting $dir patches..."
 	#git apply --reverse $rootdirectory/device/elephone/p9000/patches/$dir/*.patch
-	repo sync $dir
+	repo sync $dir --force-sync
 	echo " "
 done
 

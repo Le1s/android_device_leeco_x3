@@ -1,6 +1,6 @@
--include vendor/LeTV/x500/BoardConfigVendor.mk
+-include vendor/leeco/x3/BoardConfigVendor.mk
 
-LOCAL_PATH := device/LeTV/x500
+LOCAL_PATH := device/leeco/x3
 
 TARGET_SPECIFIC_HEADER_PATH := $(LOCAL_PATH)/include
 
@@ -79,7 +79,7 @@ BOARD_MKBOOTIMG_ARGS := \
 	--ramdisk_offset 0x03f88000 \
 	--second_offset 0x00e88000 \
 	--tags_offset 0x0df88000 \
-	--board WisniaPL
+	--board MT6795
 
 TARGET_PREBUILT_KERNEL := $(LOCAL_PATH)/prebuilt/kernel
 
@@ -116,7 +116,7 @@ BOARD_USES_MTK_AUDIO := true
 BOARD_CONNECTIVITY_VENDOR := MediaTek
 
 # RIL
-BOARD_RIL_CLASS := ../../../device/LeTV/x500/ril
+BOARD_RIL_CLASS := ../../../$(LOCAL_PATH)/ril
 BOARD_CONNECTIVITY_MODULE := conn_soc
 
 # Display
@@ -172,15 +172,23 @@ TARGET_SYSTEM_PROP := $(LOCAL_PATH)/system.prop
 
 # SELinux
 BOARD_SEPOLICY_DIRS := \
-    device/LeTV/x500/sepolicy
-    
+    $(LOCAL_PATH)/sepolicy
+
 #Use dlmalloc instead of jemalloc for mallocs
-MALLOC_IMPL := dlmalloc 
+MALLOC_IMPL := dlmalloc
 
 # Keystore
 TARGET_PROVIDES_KEYMASTER := true
 
 # Hack for building without kernel sources
-ifeq ($(TARGET_DEVICE),x500)
+ifeq ($(TARGET_DEVICE),x3)
 $(shell mkdir -p $(OUT)/obj/KERNEL_OBJ/usr)
+endif
+
+# Making symlinks in libMcGatekeeper
+ifeq ($(TARGET_DEVICE),x3)
+$(shell ln -sf libMcGatekeeper.so \$(TARGET_OUT)/lib64/hw/gatekeeper.mt6795.so; \\
+	ln -sf libMcGatekeeper.so \$(TARGET_OUT)/lib64/hw/gatekeeper.x500.so; \\
+	ln -sf libMcGatekeeper.so \$(TARGET_OUT)/lib/hw/gatekeeper.mt6795.so; \\
+	ln -sf libMcGatekeeper.so \$(TARGET_OUT)/lib/hw/gatekeeper.x500.so; )
 endif
