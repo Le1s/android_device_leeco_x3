@@ -18,11 +18,11 @@ $(call inherit-product-if-exists, frameworks/native/build/phone-xxhdpi-3072-hwui
 # Vendor
 $(call inherit-product, vendor/leeco/x3/x3-vendor-blobs.mk)
 
-# Overlay Folder
-DEVICE_PACKAGE_OVERLAYS += $(LOCAL_PATH)/overlay
-
 # Folder path
 LOCAL_PATH := device/leeco/x3
+
+# Overlay Folder
+DEVICE_PACKAGE_OVERLAYS += $(LOCAL_PATH)/overlay
 
 # Screen density
 PRODUCT_AAPT_CONFIG := normal xxhdpi
@@ -62,16 +62,14 @@ PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \
     ro.dalvik.vm.native.bridge=0 \
     persist.sys.usb.config=mtp \
     ro.mount.fs=EXT4 \
-    camera.disable_zsl_mode=1 \
-    persist.sys.timezone=Europe/Warsaw
+    camera.disable_zsl_mode=1
 
 # PRODUCT_PROPERTY_OVERRIDES
 PRODUCT_PROPERTY_OVERRIDES += \
     ro.kernel.android.checkjni=0 \
     ro.telephony.ril.config=fakeiccid  \
     persist.call_recording.enabled=true \
-    persist.call_recording.src=1  \
-    ro.sys.fw.bg_apps_limits=5
+    persist.call_recording.src=1
 
 # Audio
 PRODUCT_PACKAGES += \
@@ -101,7 +99,6 @@ PRODUCT_COPY_FILES += \
     frameworks/av/media/libstagefright/data/media_codecs_google_telephony.xml:system/etc/media_codecs_google_telephony.xml \
     frameworks/av/media/libstagefright/data/media_codecs_google_video.xml:system/etc/media_codecs_google_video.xml
 
-
 # Filesystem management tools
 PRODUCT_PACKAGES += \
     e2fsck \
@@ -116,6 +113,7 @@ PRODUCT_PACKAGES += \
 
 PRODUCT_TAGS += dalvik.gc.type-precise
 PRODUCT_BUILD_PROP_OVERRIDES += BUILD_UTC_DATE=0
+
 # Var patch
 ifneq ($(TARGET_BUILD_VARIANT),user,userdebug,eng)
   ADDITIONAL_DEFAULT_PROPERTIES += ro.adb.secure=0
