@@ -3,3 +3,41 @@ This is patch directory
 cd WORKING_DIR
 sh device/leeco/x3/patches/install.sh
 sh device/leeco/x3/patches/uninstall.sh
+
+
+Currently, these doesn't apply
+
+# bionic _0001
+Applying bionic patches...
+error: patch failed: libc/bionic/ndk_cruft.cpp:340
+error: libc/bionic/ndk_cruft.cpp: patch does not apply
+error: patch failed: libc/libc.arm.map:122
+error: libc/libc.arm.map: patch does not apply
+error: patch failed: libc/libc.map.txt:122
+error: libc/libc.map.txt: patch does not apply
+error: patch failed: libc/libc.mips.map:119
+error: libc/libc.mips.map: patch does not apply
+error: patch failed: libc/libc.x86.map:119
+error: libc/libc.x86.map: patch does not apply
+
+# frameworks_av_0001
+Applying frameworks/av patches...
+error: patch failed: media/libstagefright/MediaSource.cpp:23
+error: media/libstagefright/MediaSource.cpp: patch does not apply
+
+# frameworks_base_0001
+Applying frameworks/base patches...
+error: patch failed: services/core/java/com/android/server/pm/PackageManagerService.java:20008
+error: services/core/java/com/android/server/pm/PackageManagerService.java: patch does not apply
+
+# packages_apps_Settings_0001
+Applying packages/apps/Settings patches...
+error: patch failed: res/xml/device_info_settings.xml:133
+error: res/xml/device_info_settings.xml: patch does not apply
+error: patch failed: src/com/android/settings/DeviceInfoSettings.java:67
+error: src/com/android/settings/DeviceInfoSettings.java: patch does not apply
+
+# system_core_0002
+Applying system/core patches...
+error: patch failed: libcutils/fs_config.c:143
+error: libcutils/fs_config.c: patch does not apply
