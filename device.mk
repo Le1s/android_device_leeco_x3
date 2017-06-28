@@ -130,8 +130,9 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/ramdisk/init.volte.rc:root/init.volte.rc \
     $(LOCAL_PATH)/ramdisk/init.mal.rc:root/init.mal.rc \
     $(LOCAL_PATH)/ramdisk/init.usb.configfs:root/init.usb.configfs.rc \
-    $(LOCAL_PATH)/ramdisk/init.trustonic.rc:root/init.trustonic.rc \
-
+		$(LOCAL_PATH)/ramdisk/init.trustonic.rc:root/init.trustonic.rc \
+		$(LOCAL_PATH)/ramdisk/init.trustonic.rc:root/init.usb.rc \
+		$(LOCAL_PATH)/ramdisk/init.trustonic.rc:root/init.rc
 
 PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/handheld_core_hardware.xml:system/etc/permissions/handheld_core_hardware.xml \

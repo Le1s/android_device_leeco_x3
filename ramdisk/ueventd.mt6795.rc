@@ -33,6 +33,9 @@
 # WIFI
 /dev/wmtWifi              0660   system     system
 
+# FMRadio
+/dev/fm                   0660   media     media
+
 # MTK BTIF driver
 /dev/btif                 0600   system     system
 
