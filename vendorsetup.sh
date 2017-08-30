@@ -1,1 +1,1 @@
-add_lunch_combo du_x3-userdebug
+add_lunch_combo aosp_x3-userdebug
