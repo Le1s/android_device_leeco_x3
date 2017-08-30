@@ -291,10 +291,6 @@ PRODUCT_PACKAGES += \
 	libbwc \
 	libm4u
 
-# Engineering mode
-PRODUCT_PACKAGES += \
-	EngineerMode
-
 # Include explicitly to work around Facelock issues
 PRODUCT_PACKAGES += libprotobuf-cpp-full
 
