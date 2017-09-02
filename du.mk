@@ -1,5 +1,5 @@
 # Check for target product
-ifeq (lineage_x3,$(TARGET_PRODUCT))
+ifeq (du_x3,$(TARGET_PRODUCT))
 
 LOCAL_PATH := device/leeco/x3
 
@@ -10,8 +10,8 @@ $(call inherit-product, $(SRC_TARGET_DIR)/product/aosp_base_telephony.mk)
 # Inherit device configuration
 $(call inherit-product, $(LOCAL_PATH)/device.mk)
 
-# Inherit some common Lineage stuff.
-$(call inherit-product, vendor/cm/config/common_full_phone.mk)
+# Inherit some common du stuff.
+$(call inherit-product, vendor/du/config/common_full_phone.mk)
 
 # Release name
 PRODUCT_RELEASE_NAME := x3
@@ -21,7 +21,7 @@ TARGET_SCREEN_HEIGHT := 1920
 TARGET_SCREEN_WIDTH := 1080
 
 ## Device identifier. This must come after all inclusions
-PRODUCT_NAME := lineage_x3
+PRODUCT_NAME := du_x3
 PRODUCT_DEVICE := x3
 PRODUCT_BRAND := LeEco
 PRODUCT_MODEL := Le 1s
