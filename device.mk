@@ -258,8 +258,7 @@ PRODUCT_COPY_FILES += \
 
 # MTK Helpers
 PRODUCT_PACKAGES += \
-	libccci_util \
-	libmtk_symbols
+	libccci_util
 
 # Sensor Calibration
 PRODUCT_PACKAGES += libem_sensor_jni
@@ -296,3 +295,20 @@ PRODUCT_PACKAGES += \
 # Engineering mode
 PRODUCT_PACKAGES += \
 	EngineerMode
+
+# Include explicitly to work around Facelock issues
+PRODUCT_PACKAGES += libprotobuf-cpp-full
+
+PRODUCT_PACKAGES += \
+	libmtkshim_log \
+	libmtkshim_audio \
+	libmtkshim_ui \
+	libmtkshim_omx \
+	libmtkshim_gps
+
+# Include symbols
+LINKER_FORCED_SHIM_LIBS := /system/lib/liblog.so|libmtkshim_log.so:/system/lib64/liblog.so|libmtkshim_log.so
+LINKER_FORCED_SHIM_LIBS := $(LINKER_FORCED_SHIM_LIBS):/system/lib/hw/audio.primary.$(TARGET_BOARD_PLATFORM).so|libmtkshim_audio.so
+LINKER_FORCED_SHIM_LIBS := $(LINKER_FORCED_SHIM_LIBS):/system/lib/libui.so|libmtkshim_ui.so:/system/lib64/libui.so|libmtkshim_ui.so
+LINKER_FORCED_SHIM_LIBS := $(LINKER_FORCED_SHIM_LIBS):/system/lib/libMtkOmxVdec.so|libmtkshim_omx.so
+LINKER_FORCED_SHIM_LIBS := $(LINKER_FORCED_SHIM_LIBS):/system/bin/mtk_agpsd|libmtkshim_gps.so
