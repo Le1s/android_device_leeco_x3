@@ -1,5 +1,6 @@
+ROM_NAME_PREFIX := lineage_
 # Check for target product
-ifeq (lineage_x3,$(TARGET_PRODUCT))
+ifeq ($(ROM_NAME_PREFIX)x3,$(TARGET_PRODUCT))
 
 LOCAL_PATH := device/leeco/x3
 
@@ -22,7 +23,7 @@ TARGET_SCREEN_HEIGHT := 1920
 TARGET_SCREEN_WIDTH := 1080
 
 ## Device identifier. This must come after all inclusions
-PRODUCT_NAME := lineage_x3
+PRODUCT_NAME := $(ROM_NAME_PREFIX)x3
 PRODUCT_DEVICE := x3
 PRODUCT_BRAND := LeEco
 PRODUCT_MODEL := Le 1s
