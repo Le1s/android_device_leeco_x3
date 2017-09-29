@@ -1,16 +1,13 @@
-# LeEco Le 1s (x3) - LineageOS 14.1
-
+# LeEco Le 1s (x3) - AOSPA 7.1.3
 ==============
 
-This branch is device tree for building LineageOS 14.1 Rom for Leeco 1S(eco).
+This branch is device tree for building Paranoid Android Rom for LeEco 1S(eco).
 
 ---
 
 ## Build Information
 
-### Broken/Bugs
+## Broken/Bugs
+* ???
 
-* Camera
-* Flashlight (statusbar and camera)
-* Hotspot
-* ?????
+it doesn't boot yet
