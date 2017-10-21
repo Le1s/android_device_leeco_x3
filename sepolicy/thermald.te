@@ -1,5 +1,5 @@
 # ==============================================
-# Policy File of /system/binthermald Executable File
+# Policy File of /system/binthermald Executable File 
 
 
 # ==============================================
@@ -7,7 +7,7 @@
 # ==============================================
 
 type thermald_exec , exec_type, file_type;
-type thermald, domain, domain_deprecated;
+type thermald ,domain;
 
 # ==============================================
 # Android Policy Rule
@@ -24,7 +24,7 @@ type thermald, domain, domain_deprecated;
 init_daemon_domain(thermald)
 
 # Date : WK14.39
-# Operation : SQC
+# Operation : SQC 
 # Purpose : for thermal management to shutdown the phone
 binder_use(thermald)
 allow thermald proc_thermal:dir search;
@@ -32,5 +32,4 @@ allow thermald proc_thermal:file { read getattr open write };
 allow thermald system_server:binder call;
 allow thermald activity_service:service_manager find;
 
-# Nougat
-allow thermald rootfs:lnk_file { getattr };
+
