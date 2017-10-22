@@ -4,7 +4,7 @@
 # ==============================================
 # Type Declaration
 # ==============================================
-type ged_srv, domain, domain_deprecated;
+type ged_srv, domain;
 type ged_srv_exec, exec_type, file_type;
 
 init_daemon_domain(ged_srv)
