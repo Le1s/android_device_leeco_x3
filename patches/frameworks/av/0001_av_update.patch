@@ -1,13 +1,5 @@
-commit 83d7a3a01c15113de3f07335418ee16bf224bba6
-Author: Deepflex <hqdevnews@gmail.com>
-Date:   Tue Aug 16 06:10:37 2016 +0700
-
-    av update
-
-    Change-Id: I78726a4fd0e2bb6975cf40d5fa3a65a0bb52412f
-
 diff --git a/camera/Android.mk b/camera/Android.mk
-index 36f6da1..575280b 100644
+index 36f6da1..1d2986d 100644
 --- a/camera/Android.mk
 +++ b/camera/Android.mk
 @@ -38,6 +38,11 @@ LOCAL_SRC_FILES:= \
@@ -15,8 +7,8 @@ index 36f6da1..575280b 100644
  	VendorTagDescriptor.cpp
 
 +ifeq ($(BOARD_HAS_MTK_HARDWARE),true)
-+	LOCAL_SRC_FILES+= \
-+		MtkCameraParameters.cpp
++LOCAL_SRC_FILES+= \
++	MtkCameraParameters.cpp
 +endif
 +
  LOCAL_SHARED_LIBRARIES := \
@@ -24,7 +16,7 @@ index 36f6da1..575280b 100644
  	libutils \
 diff --git a/camera/MtkCameraParameters.cpp b/camera/MtkCameraParameters.cpp
 new file mode 100644
-index 0000000..c22cba9
+index 0000000..2a14d3b
 --- /dev/null
 +++ b/camera/MtkCameraParameters.cpp
 @@ -0,0 +1,331 @@
@@ -361,7 +353,7 @@ index 0000000..c22cba9
 +
 diff --git a/include/camera/MtkCameraParameters.h b/include/camera/MtkCameraParameters.h
 new file mode 100644
-index 0000000..04b78af
+index 0000000..f317f06
 --- /dev/null
 +++ b/include/camera/MtkCameraParameters.h
 @@ -0,0 +1,388 @@
@@ -997,24 +989,6 @@ index 0000000..84616f7
 +
 +} // namespace
 +
-diff --git a/media/libstagefright/include/OMXNodeInstance.h b/media/libstagefright/include/OMXNodeInstance.h
-index 4f1fa84..ba2c347 100644
---- a/media/libstagefright/include/OMXNodeInstance.h
-+++ b/media/libstagefright/include/OMXNodeInstance.h
-@@ -161,10 +161,13 @@ private:
-     };
-     Vector<ActiveBuffer> mActiveBuffers;
-     // for buffer ptr to buffer id translation
-+    // but don't enable for use with MTK Lollipop- blob
-+#ifndef USE_LEGACY_MTK_AV_BLOB
-     Mutex mBufferIDLock;
-     uint32_t mBufferIDCount;
-     KeyedVector<OMX::buffer_id, OMX_BUFFERHEADERTYPE *> mBufferIDToBufferHeader;
-     KeyedVector<OMX_BUFFERHEADERTYPE *, OMX::buffer_id> mBufferHeaderToBufferID;
-+#endif
-     MetadataBufferType mMetadataType[2];
-
-     // For debug support
 diff --git a/media/libstagefright/include/SoftVideoDecoderOMXComponent.h b/media/libstagefright/include/SoftVideoDecoderOMXComponent.h
 index 4529007..37cc066 100644
 --- a/media/libstagefright/include/SoftVideoDecoderOMXComponent.h
@@ -1029,76 +1003,8 @@ index 4529007..37cc066 100644
      virtual void updatePortDefinitions(bool updateCrop = true, bool updateInputSize = false);
 
      uint32_t outputBufferWidth();
-diff --git a/media/libstagefright/omx/Android.mk b/media/libstagefright/omx/Android.mk
-index d16d5df..31a0c4f 100644
---- a/media/libstagefright/omx/Android.mk
-+++ b/media/libstagefright/omx/Android.mk
-@@ -36,6 +36,12 @@ ifeq ($(strip $(AUDIO_FEATURE_ENABLED_EXTN_FLAC_DECODER)),true)
- endif
- endif
-
-+ifeq ($(BOARD_HAS_MTK_HARDWARE),true)
-+ifeq ($(BOARD_USES_LEGACY_MTK_AV_BLOB),true)
-+LOCAL_CFLAGS += -DUSE_LEGACY_MTK_AV_BLOB
-+endif
-+endif
-+
- LOCAL_MODULE:= libstagefright_omx
- LOCAL_CFLAGS += -Werror -Wall
- LOCAL_CLANG := true
- diff --git a/media/libstagefright/omx/OMXNodeInstance.cpp b/media/libstagefright/omx/OMXNodeInstance.cpp
- index 8d7ffb9..bcb46eb 100644
- --- a/media/libstagefright/omx/OMXNodeInstance.cpp
- +++ b/media/libstagefright/omx/OMXNodeInstance.cpp
- @@ -220,10 +220,14 @@ OMXNodeInstance::OMXNodeInstance(
-      : mOwner(owner),
-        mNodeID(0),
-        mHandle(NULL),
- ++#ifndef USE_LEGACY_MTK_AV_BLOB
-        mObserver(observer),
-        mSailed(false),
-        mQueriedProhibitedExtensions(false),
-        mBufferIDCount(0)
- +#else
- +      mObserver(observer)
- +#endif
-  {
-      mName = ADebug::GetDebugName(name);
-      DEBUG = ADebug::GetDebugLevelFromProperty(name, "debug.stagefright.omx-debug");
- @@ -1797,6 +1801,7 @@ void OMXNodeInstance::freeActiveBuffers() {
-      }
-  }
-
- +#ifndef USE_LEGACY_MTK_AV_BLOB
-  OMX::buffer_id OMXNodeInstance::makeBufferID(OMX_BUFFERHEADERTYPE *bufferHeader) {
-      if (bufferHeader == NULL) {
-          return 0;
- @@ -1863,4 +1868,23 @@ void OMXNodeInstance::invalidateBufferID(OMX::buffer_id buffer) {
-      mBufferIDToBufferHeader.removeItemsAt(index);
-  }
-
- +#else
- +
- +OMX::buffer_id OMXNodeInstance::makeBufferID(OMX_BUFFERHEADERTYPE *bufferHeader) {
- +    return (OMX::buffer_id)(size_t)bufferHeader;
- +}
- +
- +OMX_BUFFERHEADERTYPE *OMXNodeInstance::findBufferHeader(OMX::buffer_id buffer, OMX_U32 portIndex __unused) {
- +    return (OMX_BUFFERHEADERTYPE *)(size_t)buffer;
- +}
- +
- +OMX::buffer_id OMXNodeInstance::findBufferID(OMX_BUFFERHEADERTYPE *bufferHeader) {
- +    return (OMX::buffer_id)(size_t)bufferHeader;
- +}
- +
- +void OMXNodeInstance::invalidateBufferID(OMX::buffer_id buffer __unused) {
- +}
- +
- +#endif
- +
-  }  // namespace android
 diff --git a/media/libstagefright/omx/SoftVideoDecoderOMXComponent.cpp b/media/libstagefright/omx/SoftVideoDecoderOMXComponent.cpp
-index 19dde83..61a4fdc 100644
+index 19dde83..d84f76a 100644
 --- a/media/libstagefright/omx/SoftVideoDecoderOMXComponent.cpp
 +++ b/media/libstagefright/omx/SoftVideoDecoderOMXComponent.cpp
 @@ -130,6 +130,34 @@ void SoftVideoDecoderOMXComponent::initPorts(
@@ -1125,12 +1031,12 @@ index 19dde83..61a4fdc 100644
 +            (def->format.video.nFrameWidth *
 +             def->format.video.nFrameHeight * 3) / 2;
 +
-+    if (updateCrop) {
++   if (updateCrop) {
 +        mCropLeft = 0;
 +        mCropTop = 0;
 +        mCropWidth = mWidth;
 +        mCropHeight = mHeight;
-+    }
++   }
 +}
 +
  void SoftVideoDecoderOMXComponent::updatePortDefinitions(bool updateCrop, bool updateInputSize) {
@@ -1152,18 +1058,9 @@ index 19dde83..61a4fdc 100644
              if (fakeStride) {
                  // MAJOR HACK that is not pretty, it's just to fool the renderer to read the correct
 diff --git a/services/camera/libcameraservice/api1/CameraClient.cpp b/services/camera/libcameraservice/api1/CameraClient.cpp
-index af46d63..efed5a2 100644
+index af46d63..f56f8f3 100644
 --- a/services/camera/libcameraservice/api1/CameraClient.cpp
 +++ b/services/camera/libcameraservice/api1/CameraClient.cpp
-@@ -696,7 +696,7 @@ void CameraClient::disableMsgType(int32_t msgType) {
- #define CHECK_MESSAGE_INTERVAL 10 // 10ms
- bool CameraClient::lockIfMessageWanted(int32_t msgType) {
- #ifdef MTK_HARDWARE
--    return true;
-+    return true; //needed too.
- #endif
-     int sleepCount = 0;
-     while (mMsgEnabled & msgType) {
 @@ -742,6 +742,18 @@ void CameraClient::notifyCallback(int32_t msgType, int32_t ext1,
          int32_t ext2, void* user) {
      LOG2("notifyCallback(%d)", msgType);
