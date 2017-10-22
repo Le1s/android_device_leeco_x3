@@ -80,9 +80,6 @@ BOARD_MKBOOTIMG_ARGS := \
 	--second_offset 0x00e88000 \
 	--tags_offset 0x0df88000 \
 	--board MT6795
-#prebuilt
-#TARGET_PREBUILT_KERNEL := $(LOCAL_PATH)/prebuilt/kernel
-#source
 TARGET_KERNEL_SOURCE := kernel/leeco/x3
 TARGET_KERNEL_CONFIG := x500_defconfig
 TARGET_KERNEL_CROSS_COMPILE_PREFIX := aarch64-linux-android-
@@ -161,9 +158,9 @@ BOARD_MEDIATEK_USES_GPS := true
 
 # make_ext4fs requires numbers in dec format
 BOARD_HAS_LARGE_FILESYSTEM := true
-BOARD_SYSTEMIMAGE_PARTITION_SIZE:=1610612736
-BOARD_CACHEIMAGE_PARTITION_SIZE:=134217728
-BOARD_USERDATAIMAGE_PARTITION_SIZE:=1240465408
+BOARD_SYSTEMIMAGE_PARTITION_SIZE := 1610612736
+BOARD_CACHEIMAGE_PARTITION_SIZE := 134217728
+BOARD_USERDATAIMAGE_PARTITION_SIZE := 1240465408
 BOARD_BOOTIMAGE_PARTITION_SIZE := 20971520
 BOARD_RECOVERYIMAGE_PARTITION_SIZE := 20971520
 BOARD_FLASH_BLOCK_SIZE := 4096
@@ -176,8 +173,7 @@ TARGET_USE_CUSTOM_LUN_FILE_PATH := /sys/class/android_usb/android0/f_mass_storag
 TARGET_SYSTEM_PROP := $(LOCAL_PATH)/system.prop
 
 # SELinux
-BOARD_SEPOLICY_DIRS := \
-    $(LOCAL_PATH)/sepolicy
+BOARD_SEPOLICY_DIRS += device/leeco/x3/sepolicy
 
 #Use dlmalloc instead of jemalloc for mallocs
 MALLOC_IMPL := dlmalloc
@@ -185,8 +181,3 @@ MALLOC_IMPL := dlmalloc
 # Keystore
 TARGET_PROVIDES_KEYMASTER := true
 
-#Hack for prebuilt kernel
-#ifeq ($(TARGET_DEVICE),x3)
-#$(shell mkdir -p $(OUT)/obj/KERNEL_OBJ/usr)
-#$(shell touch $(OUT)/obj/KERNEL_OBJ/usr/export_includes)
-#endif
