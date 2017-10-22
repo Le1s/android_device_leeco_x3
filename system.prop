@@ -1,9 +1,11 @@
 #
-# system.prop for generic sdk
+# system.prop for LeEco Le 1s
 #
 
-rild.libpath=mtk-ril.so
-rild.libargs=-d /dev/ttyC0
+# Enable ADB from the begining
+persist.service.adb.enable=1
+persist.service.debuggable=1
+persist.sys.usb.config=mass_storage,adb
 
 # MTK, Infinity, 20090720 {
 wifi.interface=wlan0
@@ -21,6 +23,8 @@ mediatek.wlan.ctia=0
 # MTK, mtk03034 20101213}
 
 
+rild.libpath=mtk-ril.so
+rild.libargs=-d /dev/ttyC0
 #
 wifi.tethering.interface=ap0
 #
@@ -58,7 +62,7 @@ persist.sys.button_jack_profile=volume
 persist.sys.button_jack_switch=0
 
 #default timezone
-persist.sys.defaulttimezone=Europe/Warsaw
+persist.sys.defaulttimezone=Asia/Kolkata
 
 ro.kernel.zio=38,108,105,16
 #ro.kernel.qemu=1
@@ -115,6 +119,8 @@ ro.mtk_gemini_support=1
 persist.radio.gemini_support=1
 ril.current.share_modem=2
 ro.mtk_audenh_support=1
+ro.mtk_ims_support=0
+ro.mtk_volte_support=0
 ro.mtk_lossless_bt_audio=1
 ro.mtk_bessurround_support=1
 ro.mtk_wapi_support=1
@@ -186,10 +192,6 @@ ro.mtk_bg_power_saving_ui=1
 ro.sim_me_lock_mode=0
 ro.mtk_dual_mic_support=1
 ro.mtk_is_tablet=0
-ro.mtk_ims_support=1
-ro.mtk.volte.enable=1
-ro.mtk_volte_support=1
-persist.dbg.volte_avail_ovr=1
 ro.mtk_voice_extension_support=1
 wfd.dummy.enable=1
 ro.mediatek.project.path=device/leeco/x3
@@ -201,4 +203,12 @@ persist.radio.mobile.data=0,0
 persist.meta.dumpdata=0
 ro.mtk_md_sbp_custom_value=0
 persist.power.useautobrightadj=true
-ro.frp.pst=/dev/block/platform/mtk-msdc.0/11230000.msdc0/by-name/frp
+ro.com.android.dataroaming=true
+ro.telephony.ril_class=MT6795
+ro.hardware=mt6795
+#ro.build.system_root_image=true
+media.stagefright.legacyencoder=true
+media.stagefright.less-secure=true
+# ClearMotion
+persist.sys.display.clearMotion=1
+ro.mtk_clearmotion_support=1

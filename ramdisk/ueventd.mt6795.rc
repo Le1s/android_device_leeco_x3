@@ -23,6 +23,9 @@
 # OTP
 /dev/otp                  0660   system    system
 
+#alarm
+/dev/alarm                0664   system     radio
+
 # GPS
 /dev/stpgps               0660   gps        gps
 /dev/gps                  0660   gps        system
@@ -35,10 +38,6 @@
 
 # FMRadio
 /dev/fm                   0660   media     media
-
-# NFC
-/dev/msr3110              0666   root       root
-/dev/mt6605               0660   nfc        radio
 
 # MTK BTIF driver
 /dev/btif                 0600   system     system
@@ -118,4 +117,3 @@
 
 #Add Wake Gestures @Bule 20161123
 /sys/bus/i2c/devices/i2c-2/2-004b/*       0664  system   system
-

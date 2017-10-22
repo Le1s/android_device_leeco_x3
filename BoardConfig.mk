@@ -4,38 +4,26 @@ LOCAL_PATH := device/leeco/x3
 
 TARGET_SPECIFIC_HEADER_PATH := $(LOCAL_PATH)/include
 
+MTK_K64_SUPPORT := yes
 USE_CAMERA_STUB := true
-TARGET_PROVIDES_INIT_RC := true
 
 ARCH_ARM_HAVE_TLS_REGISTER := true
 TARGET_NO_BOOTLOADER := true
-#TARGET_NO_FACTORYIMAGE := true
 
 TARGET_BOARD_PLATFORM := mt6795
 
-TARGET_LDPRELOAD += libxlog.so
 # CPU
-ifeq ($(FORCE_32_BIT),true)
-TARGET_ARCH := arm
-TARGET_CPU_VARIANT := cortex-a7
-TARGET_CPU_ABI := armeabi-v7a
-TARGET_CPU_ABI2 := armeabi
-TARGET_CPU_SMP := true
-TARGET_ARCH_VARIANT := armv7-a-neon
-else
 TARGET_ARCH := arm64
 TARGET_ARCH_VARIANT := armv8-a
 TARGET_CPU_ABI := arm64-v8a
 TARGET_CPU_ABI2 :=
 TARGET_CPU_VARIANT := cortex-a53
 TARGET_CPU_SMP := true
-
 TARGET_2ND_ARCH := arm
 TARGET_2ND_ARCH_VARIANT := armv7-a-neon
 TARGET_2ND_CPU_ABI := armeabi-v7a
 TARGET_2ND_CPU_ABI2 := armeabi
 TARGET_2ND_CPU_VARIANT := cortex-a53
-endif
 
 # FIX Freezing
 TARGET_NO_SENSOR_PERMISSION_CHECK := true
@@ -46,8 +34,7 @@ TARGET_BOOTLOADER_BOARD_NAME := mt6795
 
 # EXT4
 TARGET_USERIMAGES_USE_EXT4 := true
-TARGET_USERIMAGES_SPARSE_EXT_DISABLED := false
-BOARD_CACHEIMAGE_FILE_SYSTEM_TYPE := ext4
+TARGET_USERIMAGES_USE_F2FS := true
 
 # MTK Hardware
 BOARD_USES_MTK_HARDWARE:= true
@@ -69,7 +56,7 @@ COMMON_GLOBAL_CFLAGS += -DDISABLE_HW_ID_MATCH_CHECK
 # Kernel
 TARGET_USES_64_BIT_BINDER := true
 TARGET_IS_64_BIT := true
-BOARD_KERNEL_CMDLINE := bootopt=64S3,32N2,64N2 androidboot.selinux=permissive
+BOARD_KERNEL_CMDLINE := bootopt=64S3,32N2,64N2 androidboot.selinux=permissive androidboot.verifiedbootstate=green
 BOARD_KERNEL_BASE := 0x40078000
 BOARD_KERNEL_PAGESIZE := 2048
 BOARD_MKBOOTIMG_ARGS := \
@@ -110,14 +97,19 @@ USE_MINIKIN := true
 # Charger
 BOARD_CHARGER_SHOW_PERCENTAGE := true
 
+# Offline charging
+BOARD_CHARGING_MODE_BOOTING_LPM := /sys/class/BOOT/BOOT/boot/boot_mode
+
 # Fonts
 EXTENDED_FONT_FOOTPRINT := true
 
 # Audio
 BOARD_USES_MTK_AUDIO := true
 BOARD_CONNECTIVITY_VENDOR := MediaTek
+USE_XML_AUDIO_POLICY_CONF := 1
 
 # RIL
+#BOARD_PROVIDES_RILD := true
 BOARD_RIL_CLASS := ../../../$(LOCAL_PATH)/ril
 BOARD_CONNECTIVITY_MODULE := conn_soc
 
@@ -165,9 +157,22 @@ BOARD_BOOTIMAGE_PARTITION_SIZE := 20971520
 BOARD_RECOVERYIMAGE_PARTITION_SIZE := 20971520
 BOARD_FLASH_BLOCK_SIZE := 4096
 
-# CWM
+# Recovery
+TARGET_RECOVERY_INITRC := $(LOCAL_PATH)/ramdisk/init.recovery.*.rc
+ifeq ($(WITH_TWRP),true)
+TARGET_RECOVERY_FSTAB := $(LOCAL_PATH)/ramdisk/twrp.fstab
+else
 TARGET_RECOVERY_FSTAB := $(LOCAL_PATH)/ramdisk/recovery.fstab
+endif
 TARGET_USE_CUSTOM_LUN_FILE_PATH := /sys/class/android_usb/android0/f_mass_storage/lun/file
+BOARD_HAS_NO_SELECT_BUTTON := true
+BOARD_RECOVERY_SWIPE := true
+BOARD_SUPPRESS_EMMC_WIPE := true
+BOARD_USE_FRAMEBUFFER_ALPHA_CHANNEL := true
+RECOVERY_GRAPHICS_USE_LINELENGTH := true
+RECOVERY_SDCARD_ON_DATA := true
+TARGET_DISABLE_TRIPLE_BUFFERING := false
+TARGET_RECOVERY_PIXEL_FORMAT := "RGBA_8888"
 
 # system.prop
 TARGET_SYSTEM_PROP := $(LOCAL_PATH)/system.prop
@@ -180,4 +185,11 @@ MALLOC_IMPL := dlmalloc
 
 # Keystore
 TARGET_PROVIDES_KEYMASTER := true
+# Charger
+BACKLIGHT_PATH := /sys/class/leds/lcd-backlight/brightness
+BOARD_RED_LED_PATH := "/sys/class/leds/red"
+BOARD_GREEN_LED_PATH := "/sys/class/leds/green"
+BOARD_BLUE_LED_PATH := "/sys/class/leds/blue"
 
+# Tethering
+PRODUCT_PROPERTY_OVERRIDES += net.tethering.noprovisioning=true

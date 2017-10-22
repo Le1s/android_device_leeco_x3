@@ -10,17 +10,26 @@ import init.mal.rc
 import init.trustonic.rc
 
 import init.ssd.rc
-import init.modem.rc	
+import init.modem.rc
 
-# init.modem.rc must be the LAST rc file because vold.post_fs_data_done is set in it
-# import init.modem.rc
-# *** DO NOT import the new rc file after this line ***
+on late-fs
+    # boot time fs tune
+    write /sys/block/mmcblk0/queue/iostats 0
+    write /sys/block/mmcblk0/queue/iosched/slice_idle 0
+    write /sys/block/mmcblk0/queue/read_ahead_kb 2048
+    write /sys/block/mmcblk0/queue/nr_requests 256
 
 on early-init
     mount debugfs debugfs /sys/kernel/debug
     chmod 0755 /sys/kernel/debug
 
 on init
+
+    # For debugging:
+    setprop ro.secure=0
+    setprop ro.adb.secure=0
+    setprop ro.debuggable=1
+
     # Support legacy paths
     symlink /sdcard /mnt/sdcard
 
@@ -69,7 +78,7 @@ on init
 # mount different fs start
 
 on charger
-    mount ext4 /dev/block/platform/mtk-msdc.0/11230000.MSDC0/by-name/system /system ro wait
+    mount ext4 /dev/block/platform/mtk-msdc.0/11230000.MSDC0/by-name/system /system ro
     start fuelgauged
     start kpoc_charger
     start servicemanager
@@ -106,6 +115,8 @@ on post-fs
 
     chown system system /protect_s
     chmod 0770 /protect_s
+    mkdir /protect_s/properties 0770 system system
+
     # once everything is setup, no need to modify /
     mount rootfs rootfs / ro remount
 
@@ -166,6 +177,7 @@ on post-fs-data
 
     # mxg2320
     mkdir /data/mxg2320 0770 root system
+
     # mmc3524x
     mkdir /data/mmc3524x 0770 root system
     chmod 0660 /data/misc/wifi/p2p_supplicant.conf
@@ -182,8 +194,9 @@ on post-fs-data
     mkdir /data/gps_mnl 0771 gps system
     mkdir /data/misc/gps 0770 gps system
 
-    # NFC
-    mkdir /data/nfc_socket 0771 nfc radio
+    # Smartwake
+    chown system system /sys/devices/soc/soc:touch@/smartwake_active
+    chown system system /sys/devices/soc/soc:touch@/wakeup_gesture
 
 # -----------------------
 # Add by MTK
@@ -337,7 +350,7 @@ on post-fs-data
     #Accdet
     chown root radio /sys/devices/platform/Accdet_Driver/driver/accdet_call_state
     #VideoCodec
-    chmod 0660 /dev/Vcodec
+    chmod 0666 /dev/Vcodec
     chown media system /dev/Vcodec
 
     #MJC
@@ -471,6 +484,9 @@ on post-fs-data
     chmod 0660 /dev/mtk_disp_mgr
     chown system graphics /dev/mtk_disp_mgr
 
+    chmod 0660 /sys/devices/platform/mtk_disp_mgr.0/rgb
+    chown system system /sys/devices/platform/mtk_disp_mgr.0/rgb
+
     chmod 0660 /dev/mtkfb_vsync
     chown system graphics /dev/mtkfb_vsync
 
@@ -527,7 +543,7 @@ on post-fs-data
     chown media media /sys/bus/platform/drivers/mem_bw_ctrl/concurrency_scenario
 
     # SMI
-    chmod 0660 /dev/MTK_SMI
+    chmod 0666 /dev/MTK_SMI
     chown media media /dev/MTK_SMI
 
     # RRC
@@ -576,9 +592,9 @@ on post-fs-data
     # Recycle stuffs
     exec /system/bin/rm -f /cache/.ipoh.img
 
-	#Thermal	
-	mkdir /data/.tp/ 0775 system system 
-	
+	#Thermal
+	mkdir /data/.tp/ 0775 system system
+
 # End of adding by MTK drivers
 # -----------------------
 
@@ -605,7 +621,7 @@ on boot
 	  chmod 0660 /sys/power/autosleep
     chown system radio /sys/class/leds/lcd-backlight/brightness
     chmod 0664 /sys/class/leds/lcd-backlight/brightness
-  
+
 
 
     chown system system /sys/devices/system/cpu/cpufreq/interactive/timer_rate
@@ -638,7 +654,7 @@ on boot
     chmod 0660 /d/ged/hal/custom_boost_gpu_freq
     chown system system /d/ged/hal/custom_upbound_gpu_freq
     chmod 0660 /d/ged/hal/custom_upbound_gpu_freq
-        
+
 # Smartbook Handler Framework
     chown system system /sys/power/sb_state
     chmod 0660 /sys/power/sb_state
@@ -751,6 +767,13 @@ on boot
     chmod 0660 /dev/ttyGS3
     chown system radio /dev/ttyGS3
 
+on property:sys.boot_completed=1
+    # end boot time fs tune
+    write /sys/block/mmcblk0/queue/read_ahead_kb 128
+    write /sys/block/mmcblk0/queue/nr_requests 128
+    write /sys/block/mmcblk0/queue/iostats 1
+
+
 on property:vold.decrypt=trigger_reset_main
     start stop_modem
     setprop service.nvram_init 0
@@ -769,7 +792,7 @@ on property:vold.decrypt=trigger_restart_framework
     start msensord
     start permission_check
     write /proc/bootprof "trigger_restart_framework"
-		
+
 on property:vold.decrypt=trigger_shutdown_framework
     start stop_modem
     start swapoff_action
@@ -1239,7 +1262,6 @@ service mxg2320d /system/bin/mxg2320d
     user system
     group system
     class main
-    ##disabled
 
 service bmm050d /system/bin/bmm050d
     disabled
