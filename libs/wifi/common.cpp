@@ -235,4 +235,3 @@ wifi_error wifi_cancel_cmd(wifi_request_id id, wifi_interface_handle iface)
 
     return WIFI_ERROR_INVALID_ARGS;
 }
-

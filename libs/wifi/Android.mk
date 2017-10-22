@@ -45,4 +45,3 @@ LOCAL_SRC_FILES := \
 LOCAL_MODULE := libwifi-hal-mt66xx
 
 include $(BUILD_STATIC_LIBRARY)
-

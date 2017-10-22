@@ -343,4 +343,3 @@ private:
     for (pos = (nlattr *)nla_data(nla), rem = nla_len(nla); \
         nla_ok(pos, rem); \
         pos = (nlattr *)nla_next(pos, &(rem)))
-

@@ -809,4 +809,3 @@ wifi_error wifi_get_firmware_memory_dump( wifi_interface_handle iface,
     MemoryDumpCommand *cmd = new MemoryDumpCommand(iface, handler);
     return (wifi_error)cmd->start();
 }
-

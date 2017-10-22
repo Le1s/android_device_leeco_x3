@@ -97,4 +97,3 @@ wifi_error wifi_get_link_stats(wifi_request_id id,
     GetLinkStatsCommand command(iface, handler);
     return (wifi_error) command.requestResponse();
 }
-

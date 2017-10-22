@@ -211,4 +211,3 @@ wifi_error wifi_cancel_cmd(wifi_request_id id, wifi_interface_handle iface);
 #define max(x, y)       ((x) > (y) ? (x) : (y))
 
 #endif
-
