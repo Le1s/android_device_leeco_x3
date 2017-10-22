@@ -7,7 +7,7 @@
 # ==============================================
 
 type mtkrild_exec , exec_type, file_type;
-type mtkrild ,domain;
+type mtkrild ,domain, domain_deprecated;
 
 
 # ==============================================
