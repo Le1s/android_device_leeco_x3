@@ -132,7 +132,7 @@
             64 - Volume rocker
          For example, a device with Home, Back and Menu keys would set this
          config to 7. -->
-    <integer name="config_deviceHardwareWakeKeys">64</integer>
+    <!--integer name="config_deviceHardwareWakeKeys">64</integer-->
 
     <!-- Indicate whether closing the lid causes the device to go to sleep and opening
          it causes the device to wake up.
@@ -214,7 +214,7 @@
     <!-- Control whether Night display is available. -->
     <bool name="config_nightDisplayAvailable">false</bool>
 
-    <bool name="config_supportDoubleTapWake">true</bool>
+    <!--bool name="config_supportDoubleTapWake">true</bool-->
     <bool name="config_networkSamplingWakesDevice">false</bool>
      <bool name="config_wifi_batched_scan_supported">false</bool>
  <!-- Is the notification LED intrusive? Used to decide if there should be a disable option -->
@@ -254,6 +254,6 @@
  <bool name="config_notifyClientOnFingerprintCancelSuccess">true</bool>
  <!-- If enabled, capacitive keys will only light up when user presses the keys.
  Otherwise, the buttons will light up whenever the user interacts with the device. -->
- <bool name="config_buttonLightOnKeypressOnly">true</bool>
- 
+ <!--bool name="config_buttonLightOnKeypressOnly">true</bool-->
+
 </resources>
