@@ -7,8 +7,9 @@ $(call inherit-product, $(SRC_TARGET_DIR)/product/aosp_base_telephony.mk)
 # Inherit device configuration
 $(call inherit-product, $(DEVICE_PATH)/device.mk)
 
-# Inherit some common Lineage stuff.
-$(call inherit-product, vendor/cm/config/common_full_phone.mk)
+# Inherit some common Carbon stuff.
+$(call inherit-product, vendor/carbon/config/common.mk)
+$(call inherit-product, vendor/carbon/config/gsm.mk)
 
 # Release name
 PRODUCT_RELEASE_NAME := x3
@@ -18,10 +19,10 @@ TARGET_SCREEN_HEIGHT := 1920
 TARGET_SCREEN_WIDTH := 1080
 
 ## Device identifier. This must come after all inclusions
-PRODUCT_NAME := lineage_x3
+PRODUCT_NAME := carbon_x3
 PRODUCT_DEVICE := x3
 PRODUCT_BRAND := LeEco
-PRODUCT_MODEL := Le 1s
+PRODUCT_MODEL := LeEco Le 1S
 PRODUCT_MANUFACTURER := LeEco
 PRODUCT_RESTRICT_VENDOR_FILES := false
 
