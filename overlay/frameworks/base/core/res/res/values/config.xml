@@ -96,20 +96,6 @@
          config to 7. -->
     <integer name="config_deviceHardwareKeys">83</integer>
 
-        <!-- Hardware keys present on the device with the ability to wake, stored as a bit field.
-         This integer should equal the sum of the corresponding value for each
-         of the following keys present:
-             1 - Home
-             2 - Back
-             4 - Menu
-             8 - Assistant (search)
-            16 - App switch
-            32 - Camera
-            64 - Volume rocker
-         For example, a device with Home, Back and Menu keys would set this
-         config to 7. -->
-    <integer name="config_deviceHardwareWakeKeys">64</integer>
-
     <!-- Indicate whether closing the lid causes the device to go to sleep and opening
          it causes the device to wake up.
          The default is false. -->
@@ -228,8 +214,5 @@
  <bool name="config_enableWifiDisplay">true</bool>
  <!-- Whether notify fingerprint client of successful cancelled authentication -->
  <bool name="config_notifyClientOnFingerprintCancelSuccess">true</bool>
- <!-- If enabled, capacitive keys will only light up when user presses the keys.
- Otherwise, the buttons will light up whenever the user interacts with the device. -->
- <bool name="config_buttonLightOnKeypressOnly">true</bool>
 
 </resources>
