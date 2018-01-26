@@ -1,8 +1,8 @@
-# LeEco Le 1s (x3) - LineageOS 14.1
+# LeEco Le 1s (x3) - LineageOS 15.0
 
 ==============
 
-This branch is device tree for building LineageOS 14.1 Rom for Leeco 1S(eco).
+This branch is device tree for building LineageOS 15.0 Rom for Leeco 1S(eco).
 
 ---
 
@@ -10,7 +10,6 @@ This branch is device tree for building LineageOS 14.1 Rom for Leeco 1S(eco).
 
 ### Broken/Bugs
 
-* Camera
-* Flashlight (statusbar and camera)
-* Hotspot
 * ?????
+
+Haven't built this yet
