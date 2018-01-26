@@ -190,3 +190,6 @@ BACKLIGHT_PATH := /sys/class/leds/lcd-backlight/brightness
 BOARD_RED_LED_PATH := "/sys/class/leds/red"
 BOARD_GREEN_LED_PATH := "/sys/class/leds/green"
 BOARD_BLUE_LED_PATH := "/sys/class/leds/blue"
+
+# Binder API version
+TARGET_USES_64_BIT_BINDER := true
