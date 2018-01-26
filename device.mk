@@ -90,9 +90,10 @@ PRODUCT_PACKAGES += \
 
 # Wifi
 PRODUCT_PACKAGES += \
+	wificond \
+	wifilogd \
 	lib_driver_cmd_mt66xx \
 	libwpa_client \
-	hostapd \
 	wpa_supplicant
 
 # Media
@@ -301,3 +302,13 @@ PRODUCT_PACKAGES += \
 PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/android.hardware.vulkan.level-0.xml:system/etc/permissions/android.hardware.vulkan.level.xml \
     frameworks/native/data/etc/android.hardware.vulkan.version-1_0_3.xml:system/etc/permissions/android.hardware.vulkan.version.xml
+# Bluetooth
+PRODUCT_PACKAGES += \
+	libbt-vendor
+
+# GPS force mode
+PRODUCT_PROPERTY_OVERRIDES += \
+	persist.force.gps.mode=gnss
+
+# Treble packages
+$(call inherit-product, $(LOCAL_PATH)/treble.mk)
