@@ -174,9 +174,6 @@ TARGET_SYSTEM_PROP := $(DEVICE_PATH)/system.prop
 # SELinux
 BOARD_SEPOLICY_DIRS += device/leeco/x3/sepolicy
 
-# Seccomp Filter
-BOARD_SECCOMP_POLICY := $(DEVICE_PATH)/seccomp
-
 # Legacy blobs
 TARGET_NEEDS_TEXT_RELOCATIONS := true
 
