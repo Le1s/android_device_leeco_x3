@@ -5,7 +5,6 @@
 # Date : WK14.XX
 # Operation : Migration
 # Purpose : for exec labels defined by mtk
-allow shell mtk_6620_launcher_exec:file rx_file_perms;
 allow shell stp_dump3_exec:file rx_file_perms;
 allow shell GoogleOtaBinder_exec:file rx_file_perms;
 allow shell MtkCodecService_exec:file rx_file_perms;
@@ -46,7 +45,6 @@ allow shell logd_exec:file rx_file_perms;
 allow shell matv_exec:file rx_file_perms;
 allow shell mc6420d_exec:file rx_file_perms;
 allow shell mdlogger_exec:file rx_file_perms;
-allow shell mdnsd_exec:file rx_file_perms;
 allow shell mediaserver_exec:file rx_file_perms;
 allow shell memsicd_exec:file rx_file_perms;
 allow shell memsicd3416x_exec:file rx_file_perms;
@@ -78,7 +76,6 @@ allow shell tiny_mkswap_exec:file rx_file_perms;
 allow shell tiny_swapon_exec:file rx_file_perms;
 allow shell wifi2agps_exec:file rx_file_perms;
 allow shell wmt_loader_exec:file rx_file_perms;
-allow shell wpa_exec:file rx_file_perms;
 allow shell xlog_exec:file rx_file_perms;
 allow shell istd8303_exec:file rx_file_perms;
 allow shell spm_loader_exec:file rx_file_perms;

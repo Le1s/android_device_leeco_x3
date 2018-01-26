@@ -39,7 +39,6 @@ set_prop(goodix, config_prop)
 
 # add self
 allow goodix self:process execmem;
-allow goodix self:capability { dac_override dac_read_search };
 allow goodix kernel:system module_request;
 
 # allow goodixfingerprintd_device
@@ -78,7 +77,6 @@ allow goodix storage_file:dir create_dir_perms;
 allow goodix storage_file:lnk_file create_file_perms;
 allow goodix mnt_user_file:dir create_dir_perms;
 allow goodix mnt_user_file:lnk_file create_file_perms;
-allow goodix self:capability { dac_override dac_read_search };
 allow goodix fuse:dir create_dir_perms;
 allow goodix fuse:file create_file_perms;
 

@@ -32,7 +32,6 @@ allow lannetmngrd mtk_wifi_prop:property_service set;
 # Operation : Migration
 # Purpose :   APP
 allow lannetmngrd platform_app:fd use;
-allow lannetmngrd platform_app_tmpfs:file write;
 
 
 # Date : WK14.37
@@ -88,10 +87,6 @@ allow lannetmngrd device:file { open write };
 #============= netd ==============
 allow lannetmngrd self:capability { setuid setgid };
 
-
-#============= netd ==============
-allow lannetmngrd isolated_app_tmpfs:file write;
-
 # Date : W14.52
 # Operation : Migration
 # Purpose :  add ePDG support
@@ -100,7 +95,6 @@ allow lannetmngrd ipsec:tcp_socket { read write setopt getopt };
 
 #============= netd ==============
 allow lannetmngrd untrusted_app:fd use;
-allow lannetmngrd untrusted_app_tmpfs:file write;
 
 #============= netd ==============
 # Date : W14.53
@@ -118,7 +112,3 @@ allow lannetmngrd volte_imcb:tcp_socket setopt;
 allow lannetmngrd untrusted_app:unix_stream_socket { read write getopt setopt};
 
 allow lannetmngrd isolated_app:fd use;
-
-
-#============= netd ==============
-allow lannetmngrd radio_tmpfs:file write;

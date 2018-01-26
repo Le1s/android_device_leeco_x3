@@ -31,7 +31,6 @@ init_daemon_domain(fuelgauged_static)
 # Purpose : Fuel Gauge daemon for access driver node
 allow fuelgauged_static input_device:dir { search open read write };
 allow fuelgauged_static input_device:file { open read };
-allow fuelgauged_static mtk-adc-cali_device:chr_file { open ioctl read write };
 
 #add by xiaoqin
 allow fuelgauged_static kmsg_device:chr_file { open write };
