@@ -433,12 +433,6 @@ service vold /system/bin/vold \
     socket cryptd stream 0660 root mount
     ioprio be 2
 
-service debuggerd /system/bin/debuggerd
-    class main
-
-service debuggerd64 /system/bin/debuggerd64
-    class main
-
 # One shot invocation to deal with encrypted volume.
 service defaultcrypto /system/bin/vdc --wait cryptfs mountdefaultencrypted
     disabled

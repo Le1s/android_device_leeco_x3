@@ -196,9 +196,6 @@ type adbd_data_file, file_type, data_file_type;
 #autokd data file
 type autokd_data_file, file_type, data_file_type;
 
-# debuggerd mrdump allocfile
-#type debuggerd_data_file, file_type, data_file_type;
-
 #ipoh data file
 type ipoh_data_file, file_type, data_file_type;
 
