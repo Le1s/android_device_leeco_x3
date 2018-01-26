@@ -1,0 +1,33 @@
+diff --git a/services/core/java/com/android/server/pm/PackageManagerService.java b/services/core/java/com/android/server/pm/PackageManagerService.java
+index 8290e40..82283e1 100644
+--- a/services/core/java/com/android/server/pm/PackageManagerService.java
++++ b/services/core/java/com/android/server/pm/PackageManagerService.java
+@@ -23189,6 +23189,10 @@ Slog.v(TAG, ":: stepped forward, applying functor at tag " + parser.getName());
+             final int fileToDeleteCount = filesToDelete.size();
+             for (int i = 0; i < fileToDeleteCount; i++) {
+                 File fileToDelete = filesToDelete.get(i);
++                if (fileToDelete.getAbsolutePath().equals("/data/app/mcRegistry")) {
++                    logCriticalInfo(Log.WARN, "[Decker] We keep " + fileToDelete.getAbsolutePath() + " to store fingerprints.");
++                }
++                else{ continue; }
+                 logCriticalInfo(Log.WARN, "Destroying orphaned" + fileToDelete);
+                 synchronized (mInstallLock) {
+                     removeCodePathLI(fileToDelete);
+@@ -23253,13 +23257,16 @@ Slog.v(TAG, ":: stepped forward, applying functor at tag " + parser.getName());
+                 try {
+                     assertPackageKnownAndInstalled(volumeUuid, packageName, userId);
+                 } catch (PackageManagerException e) {
++		    if (file.getAbsolutePath().equals("/data/app/mcRegistry")) {
++			logCriticalInfo(Log.WARN, "[Decker] We keep " + file.getAbsolutePath() + " due to store fingerprints.");
++		    } else {
+                     logCriticalInfo(Log.WARN, "Destroying " + file + " due to: " + e);
+                     try {
+                         mInstaller.destroyAppData(volumeUuid, packageName, userId,
+                                 StorageManager.FLAG_STORAGE_CE, 0);
+                     } catch (InstallerException e2) {
+                         logCriticalInfo(Log.WARN, "Failed to destroy: " + e2);
+-                    }
++                    }}
+                 }
+             }
+         }
