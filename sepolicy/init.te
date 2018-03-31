@@ -66,13 +66,6 @@ allow init persist_block_device:blk_file { write read };
 # Purpose : create symbolic link from /mnt/sdcard to /sdcard
 allow init tmpfs:lnk_file { create unlink };
 
-# Date : WK15.32
-# Operation : Migration
-# Purpose : disable AT_SECURE for LD_PRELOAD
-userdebug_or_eng(`
-  allow init { domain -lmkd }:process noatsecure;
-')
-
 # Date : WK15.33
 # Operation : Migration
 # Purpose : enable socket for ATCI

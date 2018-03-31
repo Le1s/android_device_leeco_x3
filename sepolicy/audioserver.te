@@ -16,5 +16,5 @@ allow audioserver nvdata_file:file getattr;
 allow audioserver platformblk_device:dir search;
 allow audioserver nvdata_file:lnk_file r_file_perms;
 
-# boot_mode 
-allow audioserver sysfs_boot_mode:file r_file_perms; 
+# boot_mode
+allow audioserver sysfs_boot_mode:file r_file_perms;

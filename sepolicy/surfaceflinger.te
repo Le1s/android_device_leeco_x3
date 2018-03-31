@@ -11,7 +11,6 @@ allow surfaceflinger anr_data_file:dir { write search create add_name };
 allow surfaceflinger anr_data_file:file { create write};
 allow surfaceflinger aee_exp_data_file:file write;
 allow surfaceflinger custom_file:dir search;
-binder_call(surfaceflinger, debuggerd)
 allow surfaceflinger aee_dumpsys_data_file:file write;
 allow surfaceflinger RT_Monitor_device:chr_file { read ioctl open };
 
@@ -53,11 +52,6 @@ allow surfaceflinger sf_rtt_file:dir { create search write add_name remove_name}
 allow surfaceflinger sf_rtt_file:file { open read write create rename append getattr unlink};
 allow surfaceflinger sf_rtt_file:dir {relabelto getattr};
 
-# for system shrinks memory pages when low memory
-allow surfaceflinger platform_app_tmpfs:file write;
-allow surfaceflinger isolated_app_tmpfs:file write;
-allow surfaceflinger untrusted_app_tmpfs:file write;
-
 # for BufferQueue check process name of em_svr
 allow surfaceflinger em_svr:dir search;
 allow surfaceflinger em_svr:file { read getattr open };
@@ -69,7 +63,6 @@ allow surfaceflinger mobicore_user_device:chr_file { read write ioctl open };
 allow surfaceflinger mobicore_data_file:dir search;
 
 # take down the boot time for bootprof
-allow surfaceflinger proc:file write;
 
 # notify perf service of SF information for performance
 allow surfaceflinger mtk_perf_service:service_manager find;
@@ -78,10 +71,11 @@ allow surfaceflinger mtk_perf_service:service_manager find;
 # Operation : Migration
 # Purpose : allow surfaceflinger to find pq_service
 allow surfaceflinger pq_service:service_manager { find };
+allow surfaceflinger proc:file { write ioctl };
 allow surfaceflinger guiext-server_service:service_manager { find add };
 
-# boot_mode 
-allow surfaceflinger sysfs_boot_mode:file r_file_perms; 
+# boot_mode
+allow surfaceflinger sysfs_boot_mode:file r_file_perms;
 
-#dev_info 
-allow surfaceflinger sysfs_devinfo:file r_file_perms; 
+#dev_info
+allow surfaceflinger sysfs_devinfo:file r_file_perms;

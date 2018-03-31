@@ -22,7 +22,6 @@ allow goodixfingerprintd storage_file:dir create_dir_perms;
 allow goodixfingerprintd storage_file:lnk_file create_file_perms;
 allow goodixfingerprintd mnt_user_file:dir create_dir_perms;
 allow goodixfingerprintd mnt_user_file:lnk_file create_file_perms;
-allow goodixfingerprintd self:capability { dac_override dac_read_search };
 allow goodixfingerprintd fuse:dir create_dir_perms;
 allow goodixfingerprintd fuse:file create_file_perms;
 
@@ -46,7 +45,6 @@ set_prop(goodixfingerprintd, config_prop)
 
 # add self
 allow goodixfingerprintd self:process execmem;
-allow goodixfingerprintd self:capability { dac_override dac_read_search };
 allow goodixfingerprintd kernel:system module_request;
 
 # allow goodixfingerprintd_device

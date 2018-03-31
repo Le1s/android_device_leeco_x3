@@ -338,11 +338,6 @@ allow mediaserver untrusted_app:file { read open getattr };
 # Purpose : for access proc_secmem
 allow mediaserver proc_secmem:file { read write open};
 
-# Data : WK14.48
-# Operation : WFD
-# Purpose : For WFD scenario
-allow mediaserver untrusted_app_tmpfs:file write;
-
 # Date : WK14.49
 # Operation : WFD
 # Purpose : WFD notifies its status to thermal module

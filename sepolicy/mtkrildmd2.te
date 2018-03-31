@@ -51,19 +51,10 @@ allow mtkrildmd2 persist_ril_prop:property_service set;
 auditallow mtkrildmd2 net_radio_prop:property_service set;
 auditallow mtkrildmd2 system_radio_prop:property_service set;
 
-# Read/Write to uart driver (for GPS)
-allow mtkrildmd2 gps_device:chr_file rw_file_perms;
-
 allow mtkrildmd2 tty_device:chr_file rw_file_perms;
-
-# Allow mtkrildmd2 to create and use netlink sockets.
-allow mtkrildmd2 self:netlink_socket create_socket_perms;
-allow mtkrildmd2 self:netlink_kobject_uevent_socket create_socket_perms;
 
 # Access to wake locks
 wakelock_use(mtkrildmd2)
-
-allow mtkrildmd2 self:socket create_socket_perms;
 
 allow mtkrildmd2 Vcodec_device:chr_file { read write open };
 allow mtkrildmd2 devmap_device:chr_file { read ioctl open };
@@ -86,7 +77,6 @@ allow mtkrildmd2 emd_device:chr_file { read write open };
 allow mtkrildmd2 emd_device:chr_file ioctl;
 allow mtkrildmd2 platform_app:fd use;
 allow mtkrildmd2 radio:fd use;
-allow mtkrildmd2 radio_tmpfs:file write;
 
 # For emulator
 allow mtkrildmd2 qemu_pipe_device:chr_file { read write };
