@@ -186,14 +186,14 @@ on post-fs-data
     installkey /data
 
 # create basic filesystem structure
-    mkdir /data/nvram 0771 root system
+    mkdir /data/nvram 2771 root system
     mkdir /data/nvram/media 0771 media audio
     mkdir /data/misc 01771 system misc
     mkdir /data/misc/adb 02750 system shell
-    mkdir /data/misc/bluedroid 02770 bluetooth net_bt_stack
+    mkdir /data/misc/bluedroid 02770 bluetooth bluetooth
     # Fix the access permissions and group ownership for 'bt_config.conf'
     chmod 0660 /data/misc/bluedroid/bt_config.conf
-    chown bluetooth net_bt_stack /data/misc/bluedroid/bt_config.conf
+    chown bluetooth bluetooth /data/misc/bluedroid/bt_config.conf
     mkdir /data/misc/bluetooth 0770 system system
     mkdir /data/misc/keystore 0700 keystore keystore
     mkdir /data/misc/keychain 0771 system system
@@ -493,7 +493,7 @@ service ccci_mdinit /system/bin/ccci_mdinit 0
 service nvram_daemon /system/bin/nvram_daemon
     class main
     user root
-    group system
+    group root system
     oneshot
 
 service factory_no_image /system/bin/factory

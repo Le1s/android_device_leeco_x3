@@ -23,14 +23,12 @@ TARGET_OTA_ASSERT_DEVICE := x3,X500,X507,X509,X3,x500,x507,x509,X502,x502
 
 # Power
 PRODUCT_PACKAGES += \
-	power.default \
 	power.mt6795
 
 # Camera
 PRODUCT_PACKAGES += \
 	Camera2 \
-	Snap \
-	libcamera_parameters_ext
+	Snap
 
 # Charger
 PRODUCT_PACKAGES += \
@@ -48,23 +46,28 @@ PRODUCT_PACKAGES += \
 	com.android.future.usb.accessory
 
 PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \
-	ro.allow.mock.location=0 \
-	ro.secure=0 \
 	ro.adb.secure=0 \
+	persist.service.acm.enable=0 \
+	ro.secure=0 \
 	ro.debuggable=1 \
-	ro.zygote=zygote64_32 \
+	dalvik.vm.image-dex2oat-Xms=64m \
+	dalvik.vm.image-dex2oat-Xmx=64m \
+	dalvik.vm.dex2oat-Xms=64m \
+	dalvik.vm.dex2oat-Xmx=512m \
 	ro.dalvik.vm.native.bridge=0 \
-	persist.sys.usb.config=mtp \
+	persist.sys.usb.config=mtp,adb \
+	ro.mount.fs=EXT4 \
+	ro.allow.mock.location=0 \
 	persist.debug.xlog.enable=0 \
 	camera.disable_zsl_mode=1
 
-ifeq (lineage_x3,$(TARGET_PRODUCT))	#this is included only in lineage atm as some other roms have issue with this
-PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \
-	dalvik.vm.dex2oat-Xms=64m \
-	dalvik.vm.dex2oat-Xmx=64m \
-	dalvik.vm.image-dex2oat-Xms=64m \
-	dalvik.vm.image-dex2oat-Xmx=512m
-endif
+PRODUCT_PROPERTY_OVERRIDES += \
+	persist.service.adb.enable=1 \
+	persist.service.debuggable=1 \
+	ro.kernel.android.checkjni=0 \
+	ro.telephony.ril.config=fakeiccid \
+	persist.call_recording.enabled=true \
+	persist.call_recording.src=1
 
 # Audio
 PRODUCT_PACKAGES += \
@@ -86,7 +89,8 @@ PRODUCT_PACKAGES += \
 	lib_driver_cmd_mt66xx \
 	libwpa_client \
 	hostapd \
-	wpa_supplicant
+	wpa_supplicant \
+	wificond
 
 # Media
 PRODUCT_COPY_FILES += \
@@ -177,14 +181,16 @@ PRODUCT_COPY_FILES += \
 	$(DEVICE_PATH)/configs/media/media_codecs_mediatek_audio.xml:system/etc/media_codecs_mediatek_audio.xml\
 	$(DEVICE_PATH)/configs/media/media_codecs_mediatek_video.xml:system/etc/media_codecs_mediatek_video.xml \
 	$(DEVICE_PATH)/configs/media/media_codecs_performance.xml:system/etc/media_codecs_performance.xml \
-	$(DEVICE_PATH)/configs/media/media_profiles.xml:system/etc/media_profiles.xml \
+	$(DEVICE_PATH)/configs/media/media_profiles.xml:system/vendor/etc/media_profiles.xml \
 	$(DEVICE_PATH)/configs/mtk_clear_motion.cfg:system/etc/mtk_clear_motion.cfg
+
+PRODUCT_PROPERTY_OVERRIDES += \
+	media.settings.xml=/vendor/etc/media_profiles.xml
 
 PRODUCT_COPY_FILES += \
 	$(DEVICE_PATH)/configs/audio/audio_device.xml:system/etc/audio_device.xml \
-	$(DEVICE_PATH)/configs/audio/audio_effects.xml:system/etc/audio_effects.xml \
-	$(DEVICE_PATH)/configs/audio/audio_em.xml:system/etc/audio_em.xml \
-	$(DEVICE_PATH)/configs/audio/audio_policy.conf:system/etc/audio_policy.conf
+	$(DEVICE_PATH)/configs/audio/audio_em.xml:system/vendor/etc/audio_em.xml \
+	$(DEVICE_PATH)/configs/audio/audio_policy.conf:system/vendor/etc/audio_policy.conf
 
 PRODUCT_COPY_FILES += \
 	$(DEVICE_PATH)/configs/permissions/android.hardware.camera.xml:system/etc/permissions/android.hardware.camera.xml \
@@ -257,10 +263,8 @@ PRODUCT_COPY_FILES += \
 	$(DEVICE_PATH)/configs/hostapd/hostapd.accept:system/etc/hostapd/hostapd.accept \
 	$(DEVICE_PATH)/configs/hostapd/hostapd.deny:system/etc/hostapd/hostapd.deny
 
-
 # MTK Helpers
 PRODUCT_PACKAGES += \
-	libccci_util \
 	libmtk_symbols
 
 # Sensor Calibration
@@ -296,6 +300,24 @@ PRODUCT_COPY_FILES += \
 	frameworks/native/data/etc/android.hardware.vulkan.level-0.xml:system/etc/permissions/android.hardware.vulkan.level.xml \
 	frameworks/native/data/etc/android.hardware.vulkan.version-1_0_3.xml:system/etc/permissions/android.hardware.vulkan.version.xml
 
+# Seccomp policy
+PRODUCT_COPY_FILES += \
+	$(DEVICE_PATH)/seccomp/mediaextractor.policy:system/vendor/etc/seccomp_policy/mediaextractor.policy \
+	$(DEVICE_PATH)/seccomp/mediacodec.policy:system/vendor/etc/seccomp_policy/mediacodec.policy
+
 #Manifest
 PRODUCT_COPY_FILES += \
 	$(DEVICE_PATH)/manifest.xml:system/vendor/manifest.xml
+
+# GPS force mode
+PRODUCT_PROPERTY_OVERRIDES += \
+	persist.force.gps.mode=gnss
+
+# RIL
+PRODUCT_PACKAGES += \
+	libccci_util \
+	libril \
+	rild
+
+# Treble packages
+$(call inherit-product, $(LOCAL_PATH)/treble.mk)

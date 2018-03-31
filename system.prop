@@ -1,12 +1,6 @@
 #
 # system.prop for LeEco Le 1s
 #
-
-# Enable ADB from the begining
-persist.service.adb.enable=1
-persist.service.debuggable=1
-persist.sys.usb.config=mass_storage,adb
-
 # MTK, Infinity, 20090720 {
 wifi.interface=wlan0
 # MTK, Infinity, 20090720 }
@@ -42,7 +36,8 @@ ro.sys.usb.mtp.whql.enable=0
 # Power off opt in IPO
 sys.ipo.pwrdncap=2
 
-ro.sys.usb.storage.type=mtp,mass_storage
+ro.sys.usb.storage.type=mtp,mass_storage,adb
+service.adb.root=1
 
 # USB BICR function
 ro.sys.usb.bicr=yes
@@ -73,6 +68,9 @@ ro.kernel.zio=38,108,105,16
 debug.hwui.render_dirty_regions=false
 
 ro.sf.lcd_density=480
+
+#display: Disable EGL buffer_age extension support
+debug.hwui.use_buffer_age=false
 
 # performance
 ro.mtk_perf_simple_start_win=1
@@ -201,8 +199,7 @@ ro.mtk_voice_extension_support=1
 wfd.dummy.enable=1
 ro.mediatek.project.path=device/leeco/x3
 persist.mtk.wcn.combo.chipid=-1
-service.wcn.driver.ready=no
-service.wcn.coredump.mode=2
+persist.mtk.wcn.combo.chipid=0x6630
 ro.com.android.mobiledata=false
 persist.radio.mobile.data=0,0
 persist.meta.dumpdata=0
@@ -217,10 +214,7 @@ media.stagefright.less-secure=true
 # ClearMotion
 persist.sys.display.clearMotion=1
 ro.mtk_clearmotion_support=1
-
-#device tree stuff
-ro.kernel.android.checkjni=0
-ro.telephony.ril.config=fakeiccid
-persist.call_recording.enabled=true
-persist.call_recording.src=1
-net.tethering.noprovisioning=true
+# Storage
+ro.sys.sdcardfs=true
+# Media
+persist.media.treble_omx=false
