@@ -1,65 +1,65 @@
-From f6c94da2dc95f9db68acd283bc0cc76505ebaf91 Mon Sep 17 00:00:00 2001
-From: DeckerSU <support@decker.su>
-Date: Fri, 24 Feb 2017 16:27:00 +0300
-Subject: [PATCH] libnetutils add MTK bits (ifc_ccmni_md_cfg and others)
+From 8a380be73ae7ecfc48f39c4aacc49ee76053577b Mon Sep 17 00:00:00 2001
+From: vishalk17 <vishalkapadi95@gmail.com>
+Date: Wed, 14 Mar 2018 12:14:26 +0000
+Subject: [PATCH 3/4] O: change patch
 
-Change-Id: I3fb6f47d35cf0d20352f7caef4a05d7536169480
+Change-Id: Ic56640c0ccc541b9b95c3086c3fa3097727aa722
 ---
- include/netutils/ifc.h  |  16 +++
- libnetutils/Android.mk  |   7 ++
- libnetutils/ifc_utils.c | 270 ++++++++++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 293 insertions(+)
+ init/init.cpp                      |   2 +-
+ init/init.h                        |   2 +-
+ libnetutils/Android.bp             |   6 +-
+ libnetutils/ifc_utils.c            | 269 +++++++++++++++++++++++++++++++++++++
+ libnetutils/include/netutils/ifc.h |  16 +++
+ 5 files changed, 292 insertions(+), 3 deletions(-)
 
-diff --git a/include/netutils/ifc.h b/include/netutils/ifc.h
-index 3b27234..89028a3 100644
---- a/include/netutils/ifc.h
-+++ b/include/netutils/ifc.h
-@@ -61,6 +61,22 @@ extern int ifc_configure(const char *ifname, in_addr_t address,
+diff --git a/init/init.cpp b/init/init.cpp
+index 35fc442..f3814a3 100644
+--- a/init/init.cpp
++++ b/init/init.cpp
+@@ -88,7 +88,7 @@ static char qemu[32];
+ std::string default_console = "/dev/console";
+ static time_t process_needs_restart_at;
  
- extern in_addr_t prefixLengthToIpv4Netmask(int prefix_length);
+-const char *ENV[32];
++const char *ENV[64];
  
-+/* MTK */
-+#ifdef MTK_HARDWARE
-+extern int ifc_is_up(const char *name, unsigned *isup);
-+extern int ifc_enable_allmc(const char *name);
-+extern int ifc_disable_allmc(const char *name);
-+extern int ifc_reset_connection_by_uid(int uid, int error);
-+extern int ifc_set_throttle(const char *ifname, int rxKbps, int txKbps);
-+extern int ifc_set_fwmark_rule(const char *ifname, int mark, int add);
-+extern int ifc_set_txq_state(const char *ifname, int state);
-+extern int ifc_ccmni_md_cfg(const char *ifname, int md_id);
-+struct uid_err {
-+    int appuid;
-+	int errorNum;
-+};
-+#endif /* MTK_HARDWARE */
-+
- __END_DECLS
+ static int epoll_fd = -1;
  
- #endif /* _NETUTILS_IFC_H_ */
-diff --git a/libnetutils/Android.mk b/libnetutils/Android.mk
-index ff899c0..8c53349 100644
---- a/libnetutils/Android.mk
-+++ b/libnetutils/Android.mk
-@@ -15,6 +15,13 @@ LOCAL_MODULE := libnetutils
+diff --git a/init/init.h b/init/init.h
+index aaab523..02ba0f2 100644
+--- a/init/init.h
++++ b/init/init.h
+@@ -27,7 +27,7 @@ namespace init {
+ // Note: These globals are *only* valid in init, so they should not be used in ueventd,
+ // watchdogd, or any files that may be included in those, such as devices.cpp and util.cpp.
+ // TODO: Have an Init class and remove all globals.
+-extern const char *ENV[32];
++extern const char *ENV[64];
+ extern std::string default_console;
+ extern struct selabel_handle *sehandle;
+ extern struct selabel_handle *sehandle_prop;
+diff --git a/libnetutils/Android.bp b/libnetutils/Android.bp
+index 1d43775..8839fe1 100644
+--- a/libnetutils/Android.bp
++++ b/libnetutils/Android.bp
+@@ -17,7 +17,11 @@ cc_library_shared {
+         "liblog",
+     ],
  
- LOCAL_CFLAGS := -Werror
+-    cflags: ["-Werror"],
++    cflags: [
++        "-Werror",
++        "-DMTK_HARDWARE",
++        "-Wno-unused-parameter",
++    ],
  
-+ifeq ($(BOARD_HAS_MTK_HARDWARE),true)
-+LOCAL_CFLAGS += -DMTK_HARDWARE -Wno-unused-parameter
-+endif
-+
-+$(info TARGET_GLOBAL_CFLAGS: $(TARGET_GLOBAL_CFLAGS))
-+$(info LOCAL_CFLAGS: $(LOCAL_CFLAGS))
-+
- include $(BUILD_SHARED_LIBRARY)
- 
- include $(CLEAR_VARS)
+     export_include_dirs: ["include"],
+ }
 diff --git a/libnetutils/ifc_utils.c b/libnetutils/ifc_utils.c
-index 7739cf4..fcf0529 100644
+index a098d59..ab74a6f 100644
 --- a/libnetutils/ifc_utils.c
 +++ b/libnetutils/ifc_utils.c
-@@ -40,6 +40,10 @@
+@@ -47,11 +47,19 @@
  
  #include "netutils/ifc.h"
  
@@ -67,10 +67,8 @@ index 7739cf4..fcf0529 100644
 +#include <linux/un.h>
 +#endif
 +
- #ifdef ANDROID
- #define LOG_TAG "NetUtils"
- #include <cutils/log.h>
-@@ -56,6 +60,10 @@
+ #if defined(__ANDROID__)
+ /* SIOCKILLADDR is an Android extension. */
  #define SIOCKILLADDR 0x8939
  #endif
  
@@ -81,12 +79,10 @@ index 7739cf4..fcf0529 100644
  static int ifc_ctl_sock = -1;
  static int ifc_ctl_sock6 = -1;
  static pthread_mutex_t ifc_sock_mutex = PTHREAD_RECURSIVE_MUTEX_INITIALIZER_NP;
-@@ -737,3 +745,265 @@ ifc_configure(const char *ifname,
+@@ -725,3 +733,264 @@ ifc_configure(const char *ifname,
  
      return 0;
  }
-+
-+
 +/* MTK */
 +#ifdef MTK_HARDWARE
 +
@@ -347,6 +343,34 @@ index 7739cf4..fcf0529 100644
 +}
 +
 +#endif /* MTK_HARDWARE */
++
+diff --git a/libnetutils/include/netutils/ifc.h b/libnetutils/include/netutils/ifc.h
+index 3b27234..116c5c0 100644
+--- a/libnetutils/include/netutils/ifc.h
++++ b/libnetutils/include/netutils/ifc.h
+@@ -61,6 +61,22 @@ extern int ifc_configure(const char *ifname, in_addr_t address,
+ 
+ extern in_addr_t prefixLengthToIpv4Netmask(int prefix_length);
+ 
++/* MTK */
++#ifdef MTK_HARDWARE
++extern int ifc_is_up(const char *name, unsigned *isup);
++extern int ifc_enable_allmc(const char *name);
++extern int ifc_disable_allmc(const char *name);
++extern int ifc_reset_connection_by_uid(int uid, int error);
++extern int ifc_set_throttle(const char *ifname, int rxKbps, int txKbps);
++extern int ifc_set_fwmark_rule(const char *ifname, int mark, int add);
++extern int ifc_set_txq_state(const char *ifname, int state);
++extern int ifc_ccmni_md_cfg(const char *ifname, int md_id);
++struct uid_err {
++    int appuid;
++    int errorNum;
++};
++#endif /* MTK_HARDWARE */
++
+ __END_DECLS
+ 
+ #endif /* _NETUTILS_IFC_H_ */
 -- 
 2.7.4
 

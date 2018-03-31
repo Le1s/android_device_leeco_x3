@@ -1,5 +1,5 @@
 This is patch directory
 
-cd WORKING_DIR
+cd ANDROID_TOP
 sh device/leeco/x3/patches/install.sh
 sh device/leeco/x3/patches/uninstall.sh
