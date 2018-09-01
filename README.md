@@ -1,8 +1,8 @@
-# LeEco Le 1s (x3) - LineageOS 14.1
+# LeEco Le 1s (x3) - ViperOS v3.1.1
 
 ==============
 
-This branch is device tree for building LineageOS 14.1 Rom for Leeco 1S(eco).
+This branch is device tree for building ViperOS 3.1.1 Rom for Leeco 1S(eco).
 
 ---
 
