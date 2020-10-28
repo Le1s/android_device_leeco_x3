@@ -31,6 +31,7 @@ LOCAL_C_INCLUDES := \
 	$(TOP)/external/skia/src/images \
 	$(TOP)/external/skia/include/core \
         $(TOP)/external/skia/include/config \
+        $(TOP)/external/skia/include/private \
         $(TOP)/external/skqp/include/config \
         $(TOP)/external/pdfium/skia/config
 
@@ -96,6 +97,7 @@ LOCAL_SHARED_LIBRARIES := \
 	libui_ext
 
 LOCAL_PROPRIETARY_MODULE := true
+LOCAL_LDFLAGS +=  -fuse-ld=gold
 include $(BUILD_SHARED_LIBRARY)
 
 include $(call all-makefiles-under,$(LOCAL_PATH))

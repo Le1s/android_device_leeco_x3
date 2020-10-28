@@ -1,11 +1,11 @@
 # Folder path
 DEVICE_PATH := device/leeco/x3
 
-# Vendor path
-TARGET_COPY_OUT_VENDOR := system/vendor
-
 # Vendor
 $(call inherit-product, vendor/leeco/x3/x3-vendor-blobs.mk)
+
+# Initial Product Shipping API Level of the Device
+$(call inherit-product, $(SRC_TARGET_DIR)/product/product_launched_with_m.mk)
 
 -include $(DEVICE_PATH)/hidl.mk
 
@@ -94,6 +94,10 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
 	charger \
 	charger_res_images
+
+# Device settings
+PRODUCT_PACKAGES += \
+    DeviceSettings
 
 # Display
 PRODUCT_PACKAGES += \
@@ -193,6 +197,7 @@ PRODUCT_COPY_FILES += \
 	frameworks/native/data/etc/android.hardware.bluetooth_le.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.bluetooth_le.xml \
 	frameworks/native/data/etc/android.hardware.telephony.cdma.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.telephony.cdma.xml \
 	frameworks/native/data/etc/android.hardware.telephony.gsm.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.telephony.gsm.xml \
+        frameworks/native/data/etc/android.hardware.telephony.ims.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.telephony.ims.xml \
 	frameworks/native/data/etc/android.software.sip.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.software.sip.xml \
 	frameworks/native/data/etc/android.hardware.sensor.compass.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.sensor.compass.xml \
 	frameworks/native/data/etc/android.hardware.usb.host.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.usb.host.xml \
@@ -235,18 +240,25 @@ PRODUCT_PACKAGES += \
 
 # Ramdisk
 PRODUCT_COPY_FILES += \
-	$(DEVICE_PATH)/ramdisk/enableswap.sh:root/enableswap.sh \
-	$(DEVICE_PATH)/ramdisk/factory_init.project.rc:root/factory_init.project.rc \
-	$(DEVICE_PATH)/ramdisk/factory_init.rc:root/factory_init.rc \
-	$(DEVICE_PATH)/ramdisk/fstab.mt6795:root/fstab.mt6795 \
-	$(DEVICE_PATH)/ramdisk/init.modem.rc:root/init.modem.rc \
-	$(DEVICE_PATH)/ramdisk/init.mt6795.rc:root/init.mt6795.rc \
-	$(DEVICE_PATH)/ramdisk/init.mt6795.usb.rc:root/init.mt6795.usb.rc \
-	$(DEVICE_PATH)/ramdisk/init.project.rc:root/init.project.rc \
-	$(DEVICE_PATH)/ramdisk/ueventd.mt6795.rc:root/ueventd.mt6795.rc \
-	$(DEVICE_PATH)/ramdisk/init.volte.rc:root/init.volte.rc \
-	$(DEVICE_PATH)/ramdisk/init.mal.rc:root/init.mal.rc \
-	$(DEVICE_PATH)/ramdisk/init.trustonic.rc:root/init.trustonic.rc
+	$(DEVICE_PATH)/ramdisk/enableswap.sh:$(TARGET_COPY_OUT_VENDOR)/bin/enableswap.sh \
+	$(DEVICE_PATH)/ramdisk/factory_init.project.rc:$(TARGET_COPY_OUT_VENDOR)/etc/init/hw/factory_init.project.rc \
+	$(DEVICE_PATH)/ramdisk/factory_init.rc:$(TARGET_COPY_OUT_VENDOR)/etc/init/hw/factory_init.rc \
+	$(DEVICE_PATH)/ramdisk/init.modem.rc:$(TARGET_COPY_OUT_VENDOR)/etc/init/hw/init.modem.rc \
+	$(DEVICE_PATH)/ramdisk/init.mt6795.rc:$(TARGET_COPY_OUT_VENDOR)/etc/init/hw/init.mt6795.rc \
+	$(DEVICE_PATH)/ramdisk/init.mt6795.usb.rc:$(TARGET_COPY_OUT_VENDOR)/etc/init/hw/init.mt6795.usb.rc \
+	$(DEVICE_PATH)/ramdisk/init.project.rc:$(TARGET_COPY_OUT_VENDOR)/etc/init/hw/init.project.rc \
+	$(DEVICE_PATH)/ramdisk/init.volte.rc:$(TARGET_COPY_OUT_VENDOR)/etc/init/hw/init.volte.rc \
+	$(DEVICE_PATH)/ramdisk/init.mal.rc:$(TARGET_COPY_OUT_VENDOR)/etc/init/hw/init.mal.rc \
+	$(DEVICE_PATH)/ramdisk/init.trustonic.rc:$(TARGET_COPY_OUT_VENDOR)/etc/init/hw/init.trustonic.rc \
+ 	$(DEVICE_PATH)/ramdisk/ueventd.mt6795.rc:$(TARGET_COPY_OUT_VENDOR)/ueventd.rc
+
+ifneq ($(ENABLED_VENDOR_PARTITION),true)
+PRODUCT_COPY_FILES += \
+        $(DEVICE_PATH)/ramdisk/fstab.mt6795:$(TARGET_COPY_OUT_VENDOR)/etc/fstab.mt6795
+else
+PRODUCT_COPY_FILES += \
+       $(DEVICE_PATH)/ramdisk/fstab.vendor.mt6795:$(TARGET_COPY_OUT_VENDOR)/etc/fstab.mt6795
+endif
 
 # OpenGL
 PRODUCT_PROPERTY_OVERRIDES += \
@@ -281,10 +293,6 @@ PRODUCT_COPY_FILES += \
 	$(DEVICE_PATH)/configs/perfservboosttbl.txt:$(TARGET_COPY_OUT_VENDOR)/etc/perfservboosttbl.txt \
 	$(DEVICE_PATH)/configs/perfservscntbl.txt:$(TARGET_COPY_OUT_VENDOR)/etc/perfservscntbl.txt
 
-# Mediaserver with system group
-PRODUCT_COPY_FILES += \
-	$(DEVICE_PATH)/configs/init/mediaserver.rc:$(TARGET_COPY_OUT_VENDOR)/etc/init/mediaserver.rc
-
 # Configure jemalloc for low memory
 MALLOC_SVELTE := true
 
@@ -314,6 +322,24 @@ PRODUCT_COPY_FILES += \
     $(DEVICE_PATH)/seccomp/mediacodec.policy:$(TARGET_COPY_OUT_VENDOR)/etc/seccomp_policy/mediacodec.policy \
     $(DEVICE_PATH)/seccomp/mediaextractor.policy:$(TARGET_COPY_OUT_VENDOR)/etc/seccomp_policy/mediaextractor.policy
 
+# Surfaceflinger
+PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \
+    ro.surface_flinger.use_color_management=true \
+    ro.surface_flinger.protected_contents=true \
+    ro.surface_flinger.vsync_event_phase_offset_ns=-8000000 \
+    ro.surface_flinger.vsync_sf_event_phase_offset_ns=-8000000 \
+    ro.surface_flinger.present_time_offset_from_vsync_ns=0 \
+    ro.surface_flinger.force_hwc_copy_for_virtual_displays=true \
+    ro.surface_flinger.max_virtual_display_dimension=2048 \
+    ro.surface_flinger.running_without_sync_framework=true \
+    ro.surface_flinger.max_frame_buffer_acquired_buffers=3
+
+PRODUCT_PROPERTY_OVERRIDES += \
+    debug.sf.early_phase_offset_ns=1500000 \
+    debug.sf.early_app_phase_offset_ns=1500000 \
+    debug.sf.early_gl_phase_offset_ns=3000000 \
+    debug.sf.early_gl_app_phase_offset_ns=15000000
+
 # TextClassifier
 PRODUCT_PACKAGES += \
     textclassifier.smartselection.bundle1
@@ -338,8 +364,7 @@ PRODUCT_PACKAGES += \
 	libwpa_client \
 	hostapd \
 	wpa_supplicant \
-        wificond \
-        wifilogd
+        wificond
 
 # XML Parser
 PRODUCT_PACKAGES += libxml2

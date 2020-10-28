@@ -1,10 +1,8 @@
 # MTK platform .rc configure
 
-import init.project.rc
-import init.volte.rc
-import init.mal.rc
-import init.trustonic.rc
-import init.modem.rc
+import /vendor/etc/init/hw/init.project.rc
+import /vendor/etc/init/hw/init.volte.rc
+import /vendor/etc/init/hw/init.mal.rc
 
 on late-fs
     # boot time fs tune
@@ -39,8 +37,8 @@ export LD_PRELOAD "libmtk_symbols.so"
     chmod 0664 /proc/mtk_battery_cmd/battery_cmd
 
     export USBOTG_STORAGE /storage/usbotg
-    mkdir /protect_f 0771 system system
-    mkdir /protect_s 0771 system system
+    mkdir /mnt/vendor/protect_f 0771 system system
+    mkdir /mnt/vendor/protect_s 0771 system system
     mkdir /system
     mkdir /data 0771 system system
     mkdir /cache 0770 system cache
@@ -90,7 +88,7 @@ on charger
 # mount different fs start
 on fs
     write /proc/bootprof "INIT:Mount_START"
-    mount_all /fstab.mt6795
+    mount_all /vendor/etc/fstab.mt6795
     exec /system/bin/tune2fs -O has_journal -u 10010 -r 4096 /dev/block/platform/mtk-msdc.0/11230000.MSDC0/by-name/userdata
     write /proc/bootprof "INIT:Mount_END"
 
@@ -102,7 +100,7 @@ on fs
 
 on post-fs
     # NVRAM
-    copy /fstab.mt6795 /data/nvram/fstab.mt6795
+    copy /vendor/etc/fstab.mt6795 /data/nvram/fstab.mt6795
 
     # Support legacy paths
     symlink /sdcard /storage/sdcard0
@@ -253,7 +251,7 @@ on post-fs-data
 
     # M4U
     #insmod /vendor/lib/modules/m4u.ko
-    mknod /dev/M4U_device c 188 0
+#    mknod /dev/M4U_device c 188 0
     chmod 0444 /dev/M4U_device
     chown system media /dev/M4U_device
 
@@ -640,7 +638,7 @@ on post-fs-data
     mkdir /data/misc/ppp 0770 bluetooth net_bt
 
     # Android SEC related device nodes
-    mknod /dev/sec c 182 0
+#    mknod /dev/sec c 182 0
     chmod 0660 /dev/sec
     chown root system /dev/sec
 
@@ -1012,12 +1010,12 @@ on property:vold.decrypt=trigger_shutdown_framework
     setprop service.nvram_init 0
     write /proc/bootprof "trigger_shutdown_framework"
 
-service stop_modem /system/vendor/bin/md_ctrl 0
+service stop_modem /vendor/bin/md_ctrl 0
     class main
     disabled
     oneshot
 
-service start_modem /system/vendor/bin/md_ctrl 1
+service start_modem /vendor/bin/md_ctrl 1
     class main
     disabled
     oneshot
@@ -1043,14 +1041,8 @@ on property:debug.MB.prdebug=0
 service met_log_d /system/bin/met_log_d
     class main
 
-service bugreport /system/bin/dumpstate -d -p -B -q\
-        -o /data/data/com.android.shell/files/bugreports/bugreport
-	class main
-	disabled
-	oneshot
-
 # IMG GPU init
-service pvrsrvctl /system/vendor/bin/pvrsrvctl --no-module --start
+service pvrsrvctl /vendor/bin/pvrsrvctl --no-module --start
     class main
     user root
     group root
@@ -1614,5 +1606,4 @@ service guiext-server /vendor/bin/guiext-server
 service charger /charger
     class charger
     user root
-    group system graphics
-    seclabel u:r:charger:s0
+    group system graphics input
